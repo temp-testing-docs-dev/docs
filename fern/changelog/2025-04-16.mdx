@@ -1,0 +1,33 @@
+# Changelog
+
+## \[Version 2025.04.15]
+
+### Features
+
+* Added new GPT-4.1 models: `gpt-4.1`, `gpt-4.1-mini`, and `gpt-4.1-nano` are now available as options for the `model` and `fallbackModels` with OpenAI models.
+
+* Introduced SMS Send Tool: A new `SmsSendTool` has been added to the available tools, allowing for SMS sending functionality.
+
+* Added `confidenceThreshold` to transcription configurations: This new property allows discarding transcripts below a specified confidence threshold (default 0.4).
+
+### Enhancements
+
+* Expanded Voice Selection: You can now specify any valid `voiceId` for assistant voices without being limited to a predefined list.
+
+* Updated AI Edge Condition: Replaced `matches` property with `prompt` in AI edge conditions, allowing for more flexible and intuitive condition setting.
+
+* Added Assistant Overrides per Customer: New `assistantOverrides` property in `CreateCustomerDTO` enables customization of assistant settings for individual customers in batch calls.
+
+### Changes
+
+* Modified `speed` property in voice settings: Now accepts both string enum values and numeric values between -1 and 1.
+
+* Updated error handling: Added new error codes related to Anthropic Bedrock and Vertex providers for more detailed insights into call terminations.
+
+### Removed
+
+* Deprecated `Transport` schema: The standalone `Transport` schema has been removed, with relevant properties integrated directly into call objects.
+
+### Other
+
+* Various schema updates and refinements throughout the API documentation.
