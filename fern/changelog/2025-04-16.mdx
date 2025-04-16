@@ -1,33 +1,36 @@
 # Changelog
 
-## \[Version 2025.04.15]
+## [Version 2025.4.15] - 2025-04-15
 
 ### Features
+- **New GPT-4.1 Models**: Added support for `gpt-4.1`, `gpt-4.1-mini`, and `gpt-4.1-nano` models in OpenAI configurations. These can now be used as options for the `model` and `fallbackModels` properties.
 
-* Added new GPT-4.1 models: `gpt-4.1`, `gpt-4.1-mini`, and `gpt-4.1-nano` are now available as options for the `model` and `fallbackModels` with OpenAI models.
+- **WebSocket Transport for Real-Time Communication**: Introduced a new WebSocket transport option for direct, low-latency audio streaming between applications and Vapi AI assistants.
+  - Supports bidirectional audio streaming with customizable audio formats.
+  - New call type `vapi.websocketCall` added for WebSocket-based calls.
 
-* Introduced SMS Send Tool: A new `SmsSendTool` has been added to the available tools, allowing for SMS sending functionality.
+- **SMS Messaging Support**: Implemented a new `SmsSendTool` to enable SMS messaging capabilities within assistants.
 
-* Added `confidenceThreshold` to transcription configurations: This new property allows discarding transcripts below a specified confidence threshold (default 0.4).
+- **Enhanced Voice Customization**: 
+  - Added `autoMode` configuration for Eleven Labs Voice to automatically manage chunking strategies for long texts.
+  - Expanded voice selection for assistants, allowing any valid `voiceId` to be specified without limitations.
+
+### API Changes
+- **AI Edge Condition Updates**: Renamed the `matches` property to `prompt` in AI edge conditions. The new `prompt` property allows for natural language conditions up to 1000 characters.
+
+- **Customer-Specific Assistant Overrides**: Added `assistantOverrides` property when creating customers, enabling personalized assistant interactions for individual customers in batch calls.
+
+- **Call Configuration Updates**:
+  - Simplified the `transport` property in `Call` configuration to be a direct object instead of referencing a separate `Transport` schema.
+  - Added `assistantId` to `TargetPlan` settings for specifying assistants in test scenarios.
 
 ### Enhancements
+- **Voice Settings Improvements**:
+  - Introduced `confidenceThreshold` in transcriber settings to filter out low-confidence transcriptions.
+  - Enhanced speed control in `CartesiaExperimentalControls`, now accepting both predefined speeds and numeric values between -1 and 1.
 
-* Expanded Voice Selection: You can now specify any valid `voiceId` for assistant voices without being limited to a predefined list.
+- **Error Handling**: Added new error codes to `endedReason` enums for more detailed insights into call terminations, particularly for Anthropic Bedrock and Vertex providers.
 
-* Updated AI Edge Condition: Replaced `matches` property with `prompt` in AI edge conditions, allowing for more flexible and intuitive condition setting.
-
-* Added Assistant Overrides per Customer: New `assistantOverrides` property in `CreateCustomerDTO` enables customization of assistant settings for individual customers in batch calls.
-
-### Changes
-
-* Modified `speed` property in voice settings: Now accepts both string enum values and numeric values between -1 and 1.
-
-* Updated error handling: Added new error codes related to Anthropic Bedrock and Vertex providers for more detailed insights into call terminations.
-
-### Removed
-
-* Deprecated `Transport` schema: The standalone `Transport` schema has been removed, with relevant properties integrated directly into call objects.
-
-### Other
-
-* Various schema updates and refinements throughout the API documentation.
+### Documentation
+- Added comprehensive documentation for the new WebSocket transport feature, including setup instructions and code examples.
+- Updated changelog entries with more detailed explanations and visual aids for new features.
