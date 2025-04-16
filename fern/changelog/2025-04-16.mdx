@@ -1,0 +1,31 @@
+# Changelog
+
+## [2025-04-16]
+
+### Features
+- **New GPT-4.1 Models**: Added support for `gpt-4.1`, `gpt-4.1-mini`, and `gpt-4.1-nano` models in OpenAI configurations. These can now be used as options for the `model` and `fallbackModels` parameters.
+
+- **SMS Sending Tool**: Introduced a new SMS sending tool (`SmsSendTool`) for Twilio SMS integration. This tool can be created, updated, and used within assistants.
+
+- **Assistant Overrides per Customer**: Added `assistantOverrides` field when creating customers, allowing customization of assistant settings for individual customers in batch calls.
+
+### Enhancements
+- **Voice Selection Flexibility**: Expanded voice selection options for assistant voices. Users can now specify any valid `voiceId` without being limited to a predefined list.
+
+- **AI Edge Condition Update**: Replaced the `matches` property with `prompt` in AI edge conditions. The new `prompt` field allows for natural language conditions up to 1000 characters.
+
+- **Confidence Threshold for Transcriptions**: Added a `confidenceThreshold` parameter to various transcriber configurations. Transcripts below this threshold will be discarded.
+
+### Error Handling
+- **New Call Ended Reasons**: Expanded `endedReason` enums with new error codes related to providers like Anthropic Bedrock and Vertex, improving error handling and debugging capabilities.
+
+### Other Changes
+- **Removed Transport Object**: The `Transport` object has been removed, and its properties have been integrated directly into relevant schemas.
+
+- **Auto Mode for Voice Settings**: Added an `autoMode` boolean field to voice settings, defaulting to false.
+
+- **Call Type Addition**: Added `vapi.websocketCall` as a new option in the call type enum.
+
+### Documentation
+- Updated OpenAPI specification with new models, tools, and parameter descriptions.
+- Added examples and descriptions for new features throughout the API documentation.
