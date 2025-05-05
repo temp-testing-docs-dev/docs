@@ -1,6 +1,8 @@
 ---
 title: Google Calendar Integration
-subtitle: 'Connect your assistant to Google Calendar for seamless appointment scheduling and availability checking.'
+subtitle: >-
+  Connect your assistant to Google Calendar for seamless appointment scheduling
+  and availability checking.
 slug: tools/google-calendar
 ---
 
@@ -92,6 +94,8 @@ This tool uses the following fields to create events:
 - `attendees`: A list of email addresses for people to invite to the event
 - `timeZone`: The timezone for the event, defaults to UTC
 - `calendarId`: The calendar ID to create the event in, defaults to the primary calendar
+- `description`: A detailed description of the event (new field)
+- `location`: The location of the event (new field)
 
 ### Google Calendar Check Availability Tool
 
@@ -101,6 +105,7 @@ This tool uses the following fields to check availability:
 - `endDateTime`: The end of the time range to check
 - `timeZone`: The timezone for the availability check, defaults to UTC
 - `calendarId`: The calendar ID to check availability in, defaults to the primary calendar
+- `busyThreshold`: The maximum number of conflicting events allowed before a time slot is considered unavailable (new field)
 
 <Info>
   All datetime fields should be provided in ISO 8601 format.
@@ -144,6 +149,9 @@ Here's how the tools can be used in your assistant's configuration:
 3. **Time Zone Awareness**: Always specify the correct timezone for events and availability checks
 4. **Event Details**: Ensure all required fields are properly filled when creating events
 5. **Availability Flow**: Check availability before attempting to schedule events to avoid conflicts
+6. **Detailed Descriptions**: Use the new `description` field to provide more context about the event
+7. **Location Information**: Utilize the `location` field for in-person events or include video call links for virtual meetings
+8. **Availability Threshold**: Adjust the `busyThreshold` based on your scheduling preferences and calendar density
 
 <CardGroup cols={2}>
   <Card
