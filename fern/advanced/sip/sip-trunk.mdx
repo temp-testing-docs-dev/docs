@@ -106,6 +106,9 @@ If inbound routing is configured, call your phone number from an external line. 
 Note: Please ensure that you provide all the signaling IP addresses when creating the SIP trunk. Failure to do so will prevent proper whitelisting, which may result in encountering unauthorized 401 errors for inbound calls.
 </Warning>
 
+<Warning>
+Important: When configuring your SIP trunk, it is crucial to include all signaling IP addresses. Omitting any of these addresses can lead to whitelisting issues, potentially resulting in unauthorized 401 errors for inbound calls. Always double-check that you've included all necessary IP addresses to ensure smooth operation of your SIP trunk.
+</Warning>
 
 #### SIP REFER (Call Transfer)
 
@@ -128,5 +131,3 @@ Example tool configuration required for SIP REFER:
 ```
 
 <Info>You might need to enable SIP REFER in your SIP provider to allow this.</Info>
-
-
