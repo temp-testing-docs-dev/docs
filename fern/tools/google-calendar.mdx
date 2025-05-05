@@ -1,6 +1,8 @@
 ---
 title: Google Calendar Integration
-subtitle: 'Connect your assistant to Google Calendar for seamless appointment scheduling and availability checking.'
+subtitle: >-
+  Connect your assistant to Google Calendar for seamless appointment scheduling
+  and availability checking.
 slug: tools/google-calendar
 ---
 
@@ -92,6 +94,8 @@ This tool uses the following fields to create events:
 - `attendees`: A list of email addresses for people to invite to the event
 - `timeZone`: The timezone for the event, defaults to UTC
 - `calendarId`: The calendar ID to create the event in, defaults to the primary calendar
+- `description`: Additional details or notes for the event (new parameter)
+- `location`: The location of the event (new parameter)
 
 ### Google Calendar Check Availability Tool
 
@@ -118,7 +122,7 @@ Here's how the tools can be used in your assistant's configuration:
     "messages": [
       {
         "role": "system",
-        "content": "You are a scheduling assistant. When users want to schedule an appointment, first check their availability using the Check Availability tool, then use the Create Event tool to schedule the event if they're available.\n\n- Gather date and time range to check availability.\n- To book an appointment, gather the purpose of the appointment, ex: general checkup, dental cleaning and etc.\n\nNotes\n- Use the purpose as summary for booking appointment.\n- Current date: {{now}}"
+        "content": "You are a scheduling assistant. When users want to schedule an appointment, first check their availability using the Check Availability tool, then use the Create Event tool to schedule the event if they're available.\n\n- Gather date and time range to check availability.\n- To book an appointment, gather the purpose of the appointment, ex: general checkup, dental cleaning and etc.\n- Ask for any additional details or location information for the event.\n\nNotes\n- Use the purpose as summary for booking appointment.\n- Use additional details in the description field.\n- Current date: {{now}}"
       }
     ],
     "tools": [
@@ -144,6 +148,8 @@ Here's how the tools can be used in your assistant's configuration:
 3. **Time Zone Awareness**: Always specify the correct timezone for events and availability checks
 4. **Event Details**: Ensure all required fields are properly filled when creating events
 5. **Availability Flow**: Check availability before attempting to schedule events to avoid conflicts
+6. **Detailed Event Information**: Utilize the new `description` and `location` fields to provide more comprehensive event details
+7. **User Confirmation**: Always confirm event details with the user before creating the event
 
 <CardGroup cols={2}>
   <Card

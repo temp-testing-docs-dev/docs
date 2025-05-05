@@ -1,41 +1,24 @@
 ---
 title: Phone Number Hooks
+subtitle: Configure actions to be performed when specific events occur on phone numbers
 slug: phone-numbers/phone-number-hooks
 ---
 
 # Phone Number Hooks
 
-Phone number hooks allow you to configure actions that will be performed when specific events occur during a call. Currently, hooks support the `call.ringing` event (which is triggered when a call is ringing).
+Phone number hooks allow you to configure actions that will be performed when specific events occur on a phone number. This feature is similar to assistant hooks but applies to phone numbers instead.
 
 ## Usage
 
 Hooks are defined in the `hooks` array of a phone number. Each hook consists of:
 
-- `on`: The event that triggers the hook (supports `call.ringing`)
+- `on`: The event that triggers the hook (currently supports `call.incoming`)
 - `do`: The actions to perform when the hook triggers (supports `transfer` and `say`)
+- `filters`: Optional conditions that must be met for the hook to trigger
 
-## Example: Say Message on Call Ringing
+## Example: Transfer Incoming Calls
 
-This example shows how to play a message when a call is ringing:
-
-```bash
-curl -X PATCH "https://api.vapi.ai/phone-number/<id>" \
-     -H "Authorization: Bearer <auth>" \
-     -H "Content-Type: application/json" \
-     -d '{
-  "hooks": [{
-    "on": "call.ringing",
-    "do": [{
-      "type": "say",
-      "exact": "inbound calling is disabled."
-    }]
-  }]
-}'
-```
-
-## Example: Transfer on Call Ringing
-
-This example shows how to transfer a call when it starts ringing:
+This example shows how to transfer incoming calls to a specific phone number:
 
 ```bash
 curl -X PATCH "https://api.vapi.ai/phone-number/<id>" \
@@ -43,7 +26,7 @@ curl -X PATCH "https://api.vapi.ai/phone-number/<id>" \
      -H "Content-Type: application/json" \
      -d '{
   "hooks": [{
-    "on": "call.ringing",
+    "on": "call.incoming",
     "do": [{
       "type": "transfer",
       "destination": {
@@ -64,7 +47,7 @@ curl -X PATCH "https://api.vapi.ai/phone-number/<id>" \
      -H "Content-Type: application/json" \
      -d '{
   "hooks": [{
-    "on": "call.ringing",
+    "on": "call.incoming",
     "do": [{
       "type": "transfer",
       "destination": {
@@ -76,5 +59,70 @@ curl -X PATCH "https://api.vapi.ai/phone-number/<id>" \
 }'
 ```
 
-Common use cases for phone number hooks include:
-- Disabling inbound calling by playing a message or transferring
+## Example: Greet and Transfer
+
+This example demonstrates how to greet the caller with a message and then transfer the call:
+
+```bash
+curl -X PATCH "https://api.vapi.ai/phone-number/<id>" \
+     -H "Authorization: Bearer <auth>" \
+     -H "Content-Type: application/json" \
+     -d '{
+  "hooks": [{
+    "on": "call.incoming",
+    "do": [
+      {
+        "type": "say",
+        "exact": "Welcome to our service. We are transferring your call to an agent."
+      },
+      {
+        "type": "transfer",
+        "destination": {
+          "type": "number",
+          "number": "+1234567890",
+          "callerId": "+1987654321"
+        }
+      }
+    ]
+  }]
+}'
+```
+
+## Filtering Incoming Calls
+
+You can use filters to apply hooks only to specific incoming calls. For example, to transfer calls only from a specific number:
+
+```bash
+curl -X PATCH "https://api.vapi.ai/phone-number/<id>" \
+     -H "Authorization: Bearer <auth>" \
+     -H "Content-Type: application/json" \
+     -d '{
+  "hooks": [{
+    "on": "call.incoming",
+    "filters": [{
+      "type": "equals",
+      "key": "from",
+      "value": "+1987654321"
+    }],
+    "do": [{
+      "type": "transfer",
+      "destination": {
+        "type": "number",
+        "number": "+1234567890",
+        "callerId": "+1987654321"
+      }
+    }]
+  }]
+}'
+```
+
+## Common Use Cases
+
+Phone number hooks can be used for various purposes, including:
+
+- Routing calls to different destinations based on the caller's number
+- Providing custom greetings for specific callers
+- Implementing basic IVR (Interactive Voice Response) functionality
+- Load balancing incoming calls across multiple destinations
+
+By leveraging phone number hooks, you can create more flexible and powerful call handling solutions that meet your specific business needs.
