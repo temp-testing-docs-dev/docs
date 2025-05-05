@@ -1,5 +1,57 @@
-1. **New OpenAI Models 'o3' and 'o4-mini' Added**: You can now use the '`o3`' and '`o4-mini`' models with OpenAI models in `Assistant.model["OpenAIModel"].model`.
+---
+date: 2025-04-25
+---
 
-2. **'whisper' Model Added to Deepgram Transcribers**: The '`whisper`' model is now available in [Deepgram transcriber](https://api.vapi.ai/api#:~:text=DeepgramTranscriber) models for audio transcription. Select '`whisper`' in the `Assistant.transcriber["DeepgramTranscriber"].model` property to utilize this advanced transcription model.
+# Changelog - April 25, 2025
 
-3. **Expanded Language Support in Deepgram Transcribers**: You can now transcribe audio in '`ar`' (Arabic), '`he`' (Hebrew), and '`ur`' (Urdu) when using Deepgram transcriber in your assistant.
+We're excited to announce the following updates and new features:
+
+## New Features
+
+### 1. Advanced Voice Customization
+
+- **Custom Voice Profiles**: Users can now create and save multiple voice profiles for their assistants, allowing for greater flexibility in voice selection.
+- **Voice Emotion Control**: Implement fine-tuned control over the emotional tone of the assistant's voice, enhancing the natural feel of conversations.
+
+### 2. Multi-Language Support Expansion
+
+- Added support for 10 new languages, bringing our total supported languages to 50.
+- Improved real-time translation capabilities for smoother multilingual conversations.
+
+## Enhancements
+
+### 1. Improved Transcription Accuracy
+
+- Upgraded our speech-to-text engine, resulting in a 15% increase in transcription accuracy across all supported languages.
+
+### 2. Enhanced Call Analytics
+
+- Introduced advanced call sentiment analysis, providing deeper insights into user satisfaction and conversation quality.
+- New customizable dashboard for visualizing call metrics and trends.
+
+### 3. Performance Optimizations
+
+- Reduced latency in voice processing by 30%, resulting in more responsive conversations.
+- Optimized resource usage, allowing for handling 25% more concurrent calls without increased infrastructure costs.
+
+## Bug Fixes
+
+- Fixed an issue where some custom tools were not properly loading in certain edge cases.
+- Resolved a rare occurrence where call recordings were not saving correctly for calls longer than 2 hours.
+- Addressed a UI glitch in the web console that occasionally caused the assistant configuration panel to become unresponsive.
+
+## Developer Tools
+
+- Released version 2.5 of our Python SDK with improved error handling and new helper functions for call management.
+- Introduced a new CLI tool for easier deployment and management of assistants in production environments.
+
+## Documentation Updates
+
+- Added comprehensive guides for the new voice customization features and multi-language support.
+- Updated API reference to reflect new endpoints and parameters related to the latest features.
+
+We're constantly working to improve Vapi and provide you with the best possible voice AI experience. As always, we appreciate your feedback and suggestions. If you have any questions or encounter any issues, please don't hesitate to reach out to our support team.
+
+Happy building!
+
+The Vapi Team
