@@ -5,14 +5,21 @@ slug: assistants/assistant-hooks
 
 # Assistant Hooks
 
-Assistant hooks allow you to configure actions that will be performed when specific events occur during a call. Currently, hooks support the `call.ending` event (which is triggered when a call is ending), `assistant.speech.interrupted` (when the assistant's speech is interrupted), and `customer.speech.interrupted` (when the customer's speech is interrupted)
+Assistant hooks allow you to configure actions that will be performed when specific events occur during a call. Currently, hooks support the following events:
+
+- `call.ending` (triggered when a call is ending)
+- `assistant.speech.interrupted` (when the assistant's speech is interrupted)
+- `customer.speech.interrupted` (when the customer's speech is interrupted)
+- `call.started` (triggered when a call begins)
+- `assistant.speech.started` (when the assistant starts speaking)
+- `customer.speech.started` (when the customer starts speaking)
 
 ## Usage
 
 Hooks are defined in the `hooks` array of an assistant. Each hook consists of:
 
-- `on`: The event that triggers the hook (supports `call.ending`, `assistant.speech.interrupted`, and `customer.speech.interrupted`)
-- `do`: The actions to perform when the hook triggers (supports `transfer`, `function`, and `say`)
+- `on`: The event that triggers the hook (supports all events mentioned above)
+- `do`: The actions to perform when the hook triggers (supports `transfer`, `function`, `say`, and `log`)
 - `filters`: Optional conditions that must be met for the hook to trigger
 
 The `call.endedReason` field in filters can be set to any of the [call ended reasons](https://docs.vapi.ai/api-reference/calls/get#response.body.endedReason). The transfer destination type follows the same schema as the [transfer call tool destinations](https://docs.vapi.ai/api-reference/tools/create#request.body.transferCall.destinations).
@@ -162,8 +169,57 @@ curl -X PATCH "https://api.vapi.ai/assistant/<id>" \
 }'
 ```
 
+## Example: Logging Call Start
+
+This example shows how to log when a call starts using the new `call.started` event:
+
+```bash
+curl -X PATCH "https://api.vapi.ai/assistant/<id>" \
+     -H "Authorization: Bearer <auth>" \
+     -H "Content-Type: application/json" \
+     -d '{
+  "hooks": [{
+    "on": "call.started",
+    "do": [{
+      "type": "log",
+      "message": "Call started at {{currentDateTime}}"
+    }]
+  }]
+}'
+```
+
+## Example: Handling Speech Start Events
+
+You can use the new `assistant.speech.started` and `customer.speech.started` events to perform actions when either party begins speaking:
+
+```bash
+curl -X PATCH "https://api.vapi.ai/assistant/<id>" \
+     -H "Authorization: Bearer <auth>" \
+     -H "Content-Type: application/json" \
+     -d '{
+  "hooks": [
+    {
+      "on": "assistant.speech.started",
+      "do": [{
+        "type": "log",
+        "message": "Assistant started speaking at {{currentDateTime}}"
+      }]
+    },
+    {
+      "on": "customer.speech.started",
+      "do": [{
+        "type": "log",
+        "message": "Customer started speaking at {{currentDateTime}}"
+      }]
+    }
+  ]
+}'
+```
+
 Common use cases for hooks include:
 - Transferring to a human agent on errors
 - Routing to a fallback system if the assistant fails
 - Ensuring calls are handled gracefully in edge cases
 - Handling customer/assistant interruptions
+- Logging important call events for analysis and monitoring
+- Triggering external actions based on specific call events

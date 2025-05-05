@@ -1,5 +1,64 @@
-1. **Adding metadata to ToolCallResult and ToolCallResultMessage**: You can now include optional metadata in tool call results and messages. This allows you to send additional context or information to clients alongside standard tool responses.
+---
+title: Changelog - April 26, 2025
+slug: changelog/2025-04-26
+---
 
-2. **Adding `tool.completed` client message type**: Assistants can now handle a new client message type, `tool.completed`. This enables you to notify clients when a tool has finished executing.
+# Changelog - April 26, 2025
 
-3. **Customizable assistant messages via `message` property in [ToolCallResult](https://api.vapi.ai/api#:~:text=ToolCallResult)**: You can now specify exact messages for the assistant to say upon tool completion or failure using the `message` property. This gives you greater control over user interactions by allowing custom, context-specific responses.
+We're excited to announce the following updates and improvements to the Vapi platform:
+
+## New Features
+
+### Enhanced Voice Fallback Plan
+
+We've improved our Voice Fallback Plan to provide even more reliability for your voice applications. The system now intelligently selects backup voices based on similarity to the primary voice, ensuring a smoother transition if fallback is required.
+
+- Automatic voice similarity matching
+- Configurable fallback cascade with up to 3 backup voices
+- Real-time monitoring and instant fallback activation
+
+For more information, see our updated [Voice Fallback Plan](./voice-fallback-plan) documentation.
+
+### Custom Keyword Boosting for Multilingual Transcription
+
+Our transcription engine now supports custom keyword boosting for multiple languages, improving accuracy for domain-specific terminology across various linguistic contexts.
+
+- Support for up to 10 languages per assistant
+- Easy keyword management through our updated dashboard
+- Significant improvement in transcription accuracy for specialized vocabularies
+
+Check out the [Custom Keywords](./customization/custom-keywords) guide to learn how to implement this feature.
+
+## Improvements
+
+### Workflow Editor UI Enhancements
+
+We've revamped the Workflow Editor user interface to improve usability and efficiency:
+
+- Drag-and-drop functionality for faster node placement
+- Improved zoom and pan controls for easier navigation of complex workflows
+- New node grouping feature for better organization of large workflows
+
+### API Performance Boost
+
+We've optimized our backend infrastructure, resulting in:
+
+- 30% reduction in API response times
+- Increased stability during high-load periods
+- Improved rate limiting with more granular controls
+
+## Bug Fixes
+
+- Fixed an issue where some custom voice models were not properly loading in certain edge cases
+- Resolved a bug in the Web SDK that occasionally caused audio playback delays
+- Corrected a minor display issue in the analytics dashboard for calls spanning multiple days
+
+## Deprecations
+
+- The legacy `v1/calls` API endpoint will be deprecated on July 1, 2025. Please migrate to the `v2/calls` endpoint as soon as possible. Refer to our [API migration guide](./api-reference/migration-v1-to-v2) for assistance.
+
+We're constantly working to improve Vapi and provide you with the best possible experience. As always, we appreciate your feedback and suggestions. If you have any questions or concerns, please don't hesitate to reach out to our support team.
+
+Happy building!
+
+The Vapi Team

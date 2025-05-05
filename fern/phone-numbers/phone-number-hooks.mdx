@@ -5,37 +5,19 @@ slug: phone-numbers/phone-number-hooks
 
 # Phone Number Hooks
 
-Phone number hooks allow you to configure actions that will be performed when specific events occur during a call. Currently, hooks support the `call.ringing` event (which is triggered when a call is ringing).
+Phone number hooks allow you to configure actions that will be performed when specific events occur during a call on a particular phone number. This feature provides greater flexibility and control over call handling at the phone number level.
 
 ## Usage
 
-Hooks are defined in the `hooks` array of a phone number. Each hook consists of:
+Hooks are defined in the `hooks` array of a phone number configuration. Each hook consists of:
 
-- `on`: The event that triggers the hook (supports `call.ringing`)
-- `do`: The actions to perform when the hook triggers (supports `transfer` and `say`)
+- `on`: The event that triggers the hook (currently supports `call.starting`)
+- `do`: The actions to perform when the hook triggers (supports `transfer` and `function`)
+- `filters`: Optional conditions that must be met for the hook to trigger
 
-## Example: Say Message on Call Ringing
+## Example: Transfer on Call Start
 
-This example shows how to play a message when a call is ringing:
-
-```bash
-curl -X PATCH "https://api.vapi.ai/phone-number/<id>" \
-     -H "Authorization: Bearer <auth>" \
-     -H "Content-Type: application/json" \
-     -d '{
-  "hooks": [{
-    "on": "call.ringing",
-    "do": [{
-      "type": "say",
-      "exact": "inbound calling is disabled."
-    }]
-  }]
-}'
-```
-
-## Example: Transfer on Call Ringing
-
-This example shows how to transfer a call when it starts ringing:
+This example shows how to transfer a call to a specific number when it starts:
 
 ```bash
 curl -X PATCH "https://api.vapi.ai/phone-number/<id>" \
@@ -43,7 +25,7 @@ curl -X PATCH "https://api.vapi.ai/phone-number/<id>" \
      -H "Content-Type: application/json" \
      -d '{
   "hooks": [{
-    "on": "call.ringing",
+    "on": "call.starting",
     "do": [{
       "type": "transfer",
       "destination": {
@@ -64,7 +46,7 @@ curl -X PATCH "https://api.vapi.ai/phone-number/<id>" \
      -H "Content-Type: application/json" \
      -d '{
   "hooks": [{
-    "on": "call.ringing",
+    "on": "call.starting",
     "do": [{
       "type": "transfer",
       "destination": {
@@ -76,5 +58,91 @@ curl -X PATCH "https://api.vapi.ai/phone-number/<id>" \
 }'
 ```
 
-Common use cases for phone number hooks include:
-- Disabling inbound calling by playing a message or transferring
+## Example: Execute Function on Call Start
+
+This example demonstrates how to call a custom function when a call starts:
+
+```bash
+curl -X PATCH "https://api.vapi.ai/phone-number/<id>" \
+     -H "Authorization: Bearer <auth>" \
+     -H "Content-Type: application/json" \
+     -d '{
+  "hooks": [{
+    "on": "call.starting",
+    "do": [{
+      "type": "function",
+      "function": {
+        "name": "log_call_start",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "timestamp": {
+              "type": "string",
+              "value": "{{current_timestamp}}"
+            }
+          }
+        },
+        "description": "Logs the start of a call"
+      },
+      "async": true,
+      "server": {
+        "url": "https://your-server.com/api"
+      }
+    }]
+  }]
+}'
+```
+
+## Combining Multiple Actions
+
+You can combine multiple actions in a single hook. For example, you could log the call start and then transfer the call:
+
+```bash
+curl -X PATCH "https://api.vapi.ai/phone-number/<id>" \
+     -H "Authorization: Bearer <auth>" \
+     -H "Content-Type: application/json" \
+     -d '{
+  "hooks": [{
+    "on": "call.starting",
+    "do": [
+      {
+        "type": "function",
+        "function": {
+          "name": "log_call_start",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "timestamp": {
+                "type": "string",
+                "value": "{{current_timestamp}}"
+              }
+            }
+          },
+          "description": "Logs the start of a call"
+        },
+        "async": true,
+        "server": {
+          "url": "https://your-server.com/api"
+        }
+      },
+      {
+        "type": "transfer",
+        "destination": {
+          "type": "number",
+          "number": "+1234567890",
+          "callerId": "+1987654321"
+        }
+      }
+    ]
+  }]
+}'
+```
+
+## Best Practices
+
+1. Use phone number hooks for actions that should apply to all calls on a specific number, regardless of the assistant handling the call.
+2. Keep hook actions lightweight to avoid delays in call processing.
+3. Use async functions for operations that don't need to block the call flow.
+4. Test your hooks thoroughly to ensure they behave as expected in various scenarios.
+
+Phone number hooks provide a powerful way to customize call handling at the number level, allowing for more flexible and dynamic call routing and processing.
