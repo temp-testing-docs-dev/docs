@@ -5,37 +5,21 @@ slug: phone-numbers/phone-number-hooks
 
 # Phone Number Hooks
 
-Phone number hooks allow you to configure actions that will be performed when specific events occur during a call. Currently, hooks support the `call.ringing` event (which is triggered when a call is ringing).
+Phone number hooks allow you to configure actions that will be performed when specific events occur for calls to a particular phone number. This feature provides flexibility in handling various scenarios, such as error handling, call transfers, or custom actions based on call events.
 
 ## Usage
 
-Hooks are defined in the `hooks` array of a phone number. Each hook consists of:
+Hooks are defined in the `hooks` array of a phone number configuration. Each hook consists of:
 
-- `on`: The event that triggers the hook (supports `call.ringing`)
-- `do`: The actions to perform when the hook triggers (supports `transfer` and `say`)
+- `on`: The event that triggers the hook (currently supports `call.ending`)
+- `do`: The actions to perform when the hook triggers (supports `transfer` and `function`)
+- `filters`: Optional conditions that must be met for the hook to trigger
 
-## Example: Say Message on Call Ringing
+The `call.endedReason` field in filters can be set to any of the [call ended reasons](https://docs.vapi.ai/api-reference/calls/get#response.body.endedReason). The transfer destination type follows the same schema as the [transfer call tool destinations](https://docs.vapi.ai/api-reference/tools/create#request.body.transferCall.destinations).
 
-This example shows how to play a message when a call is ringing:
+## Example: Transfer on Error
 
-```bash
-curl -X PATCH "https://api.vapi.ai/phone-number/<id>" \
-     -H "Authorization: Bearer <auth>" \
-     -H "Content-Type: application/json" \
-     -d '{
-  "hooks": [{
-    "on": "call.ringing",
-    "do": [{
-      "type": "say",
-      "exact": "inbound calling is disabled."
-    }]
-  }]
-}'
-```
-
-## Example: Transfer on Call Ringing
-
-This example shows how to transfer a call when it starts ringing:
+This example shows how to transfer a call to a fallback number when an error occurs. The hook will trigger when the call is ending due to a pipeline error, and transfer the call to a specified phone number:
 
 ```bash
 curl -X PATCH "https://api.vapi.ai/phone-number/<id>" \
@@ -43,7 +27,12 @@ curl -X PATCH "https://api.vapi.ai/phone-number/<id>" \
      -H "Content-Type: application/json" \
      -d '{
   "hooks": [{
-    "on": "call.ringing",
+    "on": "call.ending",
+    "filters": [{
+      "type": "oneOf",
+      "key": "call.endedReason",
+      "oneOf": ["pipeline-error"]
+    }],
     "do": [{
       "type": "transfer",
       "destination": {
@@ -64,7 +53,12 @@ curl -X PATCH "https://api.vapi.ai/phone-number/<id>" \
      -H "Content-Type: application/json" \
      -d '{
   "hooks": [{
-    "on": "call.ringing",
+    "on": "call.ending",
+    "filters": [{
+      "type": "oneOf",
+      "key": "call.endedReason",
+      "oneOf": ["pipeline-error"]
+    }],
     "do": [{
       "type": "transfer",
       "destination": {
@@ -76,5 +70,63 @@ curl -X PATCH "https://api.vapi.ai/phone-number/<id>" \
 }'
 ```
 
-Common use cases for phone number hooks include:
-- Disabling inbound calling by playing a message or transferring
+## Example: Combined Actions on Error
+
+This example demonstrates how to combine multiple actions (function and transfer) when an error occurs. The hook will first call a function to log the error, and then transfer the call:
+
+```bash
+curl -X PATCH "https://api.vapi.ai/phone-number/<id>" \
+     -H "Authorization: Bearer <auth>" \
+     -H "Content-Type: application/json" \
+     -d '{
+  "hooks": [{
+    "on": "call.ending",
+    "filters": [{
+      "type": "oneOf",
+      "key": "call.endedReason",
+      "oneOf": ["pipeline-error"]
+    }],
+    "do": [
+      {
+        "type": "function",
+        "function": {
+          "name": "log_error",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "error_type": {
+                "type": "string",
+                "value": "pipeline_error"
+              }
+            }
+          },
+          "description": "Logs the error details for monitoring"
+        },
+        "async": true,
+        "server": {
+          "url": "https://your-server.com/api"
+        }
+      },
+      {
+        "type": "transfer",
+        "destination": {
+          "type": "number",
+          "number": "+1234567890",
+          "callerId": "+1987654321"
+        }
+      }
+    ]
+  }]
+}'
+```
+
+## Common Use Cases
+
+Phone number hooks are particularly useful for:
+
+- Transferring to a human agent on errors
+- Routing to a fallback system if the primary handling fails
+- Logging or monitoring specific call events
+- Implementing custom logic based on call outcomes
+
+By leveraging phone number hooks, you can create more robust and flexible call handling systems, ensuring that your users always have a smooth experience, even when unexpected issues arise.
