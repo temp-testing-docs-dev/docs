@@ -1,3 +1,52 @@
-1. **Create Sesame Voices Programmatically**: You can now create and manage [Sesame Voices](https://api.vapi.ai/api#:~:text=CreateSesameVoiceDTO) via the API by specifying a `voiceName` and `transcription`.
+---
+title: Changelog - April 23, 2025
+subtitle: Latest updates and improvements to the Vapi platform
+---
 
-2. **AWS STS Support in OAuth2 Authentication**: You can now use AWS Security Token Service for authentication by setting the `type` of `OAuth2AuthenticationPlan` to `'aws-sts'`, enabling integration with AWS's secure token services.
+# Changelog - April 23, 2025
+
+We're excited to announce the following updates and improvements to the Vapi platform:
+
+## New Features
+
+### 1. Advanced Voice Formatting
+
+We've introduced a new voice formatting system that allows for more natural and expressive text-to-speech output. This feature includes:
+
+- Dynamic pause insertion based on punctuation and context
+- Improved emphasis on key words and phrases
+- Better handling of numbers, dates, and specialized terms
+
+To learn more about this feature, check out our [Voice Formatting Plan](../assistants/voice-formatting-plan) documentation.
+
+### 2. Enhanced Custom Tool Integration
+
+Our custom tool integration has been upgraded to support more complex workflows and data processing. New capabilities include:
+
+- Support for nested JSON structures in tool responses
+- Ability to chain multiple tool calls in a single assistant turn
+- Improved error handling and debugging options
+
+For detailed information on using custom tools, visit our [Custom Tools](../tools/custom-tools) guide.
+
+## Improvements
+
+1. **Performance Optimization**: We've made significant improvements to our backend infrastructure, resulting in faster response times and increased stability during high-load periods.
+
+2. **Multilingual Support**: Added support for 5 new languages, bringing our total supported languages to 30. See the [Multilingual](../customization/multilingual) page for the full list.
+
+3. **SDK Updates**: All our client SDKs have been updated to support the latest features and improvements. Please update to the latest version to take advantage of these enhancements.
+
+## Bug Fixes
+
+- Fixed an issue where certain special characters in assistant prompts could cause unexpected behavior
+- Resolved a rare edge case where call transfers could fail under specific network conditions
+- Corrected minor inconsistencies in the documentation for the Web SDK
+
+## Deprecations
+
+- The `legacy_formatting` option for text-to-speech will be removed in the next major update. Please migrate to the new voice formatting system as soon as possible.
+
+We're constantly working to improve Vapi and provide you with the best possible experience. If you have any questions or feedback about these updates, please don't hesitate to reach out to our support team.
+
+Happy building with Vapi!
