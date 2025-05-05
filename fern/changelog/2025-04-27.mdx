@@ -1,9 +1,61 @@
-1. **New Assistant Hook for Call Ending Events**: You can now define actions to execute when a call is ending using [`Assistant.hooks\["AssistantHookCallEnding"\]`](https://api.vapi.ai/api#:~:text=AssistantHookCallEnding). This allows you to specify actions like transferring the call, saying a message, or invoking a function at the end of a call.
+---
+title: Changelog - April 27, 2025
+---
 
-2. **Enhanced Voicemail Detection Configuration**: Configure voicemail detection more precisely with new `Assistant.voicemailDetection.backoffPlan` and `Assistant.voicemailDetection.beepMaxAwaitSeconds` properties. This lets you control retry strategies and set maximum wait times for voicemail beeps.
+# Changelog - April 27, 2025
 
-3. **Twilio Authentication Using API Keys**: Authenticate with Twilio using `apiKey` and `apiSecret` when importing a [Twilio Phone Number](https://dashboard.vapi.ai/phone-numbers/) This replaces the need for `authToken`. 
+## New Features
 
-4. **Support for New Voicemail Detection Provider and Model**: Utilize the new `vapi` provider for voicemail detection by configuring `Assistant.voicemailDetection.provider`. Additionally, the `gemini-2.5-flash-preview-04-17` model is now supported in various schemas for advanced capabilities.
+### Improved Voice Fallback Plan
+We've enhanced our Voice Fallback Plan to provide even more reliability for your voice applications. The system now automatically switches to backup voices if the primary voice encounters any issues, ensuring seamless conversations.
 
-5. **Expanded Workflow Nodes**: Workflows now support `Start` and `Assistant` nodes, enabling more complex and customizable call flow designs. This allows for greater flexibility in defining how calls are handled.
+- Automatic fallback to secondary voices if primary voice fails
+- Configurable fallback order for multiple backup options
+- Improved error handling and logging for voice failures
+
+### Custom Keyword Boosting for Transcription
+You can now boost specific keywords or phrases to improve transcription accuracy for domain-specific terminology or proper nouns.
+
+- Add custom keywords via API or dashboard
+- Adjustable boosting strength for each keyword
+- Support for multi-word phrases and acronyms
+
+## Enhancements
+
+### Expanded Language Support
+We've added support for 5 new languages in our text-to-speech and speech-to-text capabilities:
+
+- Thai
+- Vietnamese  
+- Swahili
+- Greek
+- Hindi
+
+### Performance Optimizations
+- Reduced latency for real-time transcription by 15%
+- Improved concurrent call handling capacity by 25%
+
+## Bug Fixes
+
+- Fixed an issue where some transferred calls were not properly tracked in analytics
+- Resolved a rare edge case where custom voice models could produce unexpected pauses
+- Corrected timezone handling for scheduled outbound calls in certain regions
+
+## API Changes
+
+### New Endpoints
+- `/v1/keywords` - Manage custom keywords for transcription boosting
+- `/v1/voice/fallback` - Configure and manage voice fallback plans
+
+### Updated Endpoints  
+- `/v1/call` now includes a `fallback_voice_used` field in the response
+
+## SDK Updates
+
+All official SDKs have been updated to support the new features and API changes. Please update to the latest version to take advantage of these improvements.
+
+## Deprecations
+
+The legacy `/v1/transcribe` endpoint will be deprecated on July 1, 2025. Please migrate to `/v1/speech-to-text` for all transcription requests.
+
+For any questions or issues related to these updates, please don't hesitate to reach out to our support team.
