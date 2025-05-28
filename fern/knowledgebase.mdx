@@ -20,49 +20,54 @@ Using a Knowledge Base with your voice AI assistant offers several benefits:
 
 ## **How to Create a Knowledge Base**
 
-To create a Knowledge Base, follow these steps:
+To create a Knowledge Base with Trieve, follow these steps:
 
-### **Step 1: Upload Your Files**
+### **Step 1: Create a Knowledge Base with Trieve**
 
-Navigate to Platform > Files and upload your custom files in Markdown, PDF, plain text, or Microsoft Word (.doc and .docx) format to Vapi's Knowledge Base.
-
-<Frame caption="Adding files to your Knowledge Base">
-  <img
-    src="./static/images/knowledge-base/files.png"
-    alt="Adding files to your Knowledge Base"
-  />
-</Frame>
-
-Alternatively you can upload your files via the API.
-
-```bash
-curl --location 'https://api.vapi.ai/file' \
---header 'Authorization: Bearer <YOUR_API_KEY>' \
---form 'file=@"<PATH_TO_YOUR_FILE>"'
-```
-
-### **Step 2: Create a Knowledge Base**
-
-Use the ID of the uploaded file to create a Knowledge Base. Currently we support [trieve](https://trieve.ai) as a provider.
+Vapi integrates with [Trieve](https://trieve.ai) using the BYOD (Bring Your Own Dataset) approach. First, create and optimize your dataset in Trieve (see our [Integrating with Trieve guide](knowledge-base/integrating-with-trieve) for detailed instructions), then import it to Vapi:
 
 ```bash
 curl --location 'https://api.vapi.ai/knowledge-base' \
 --header 'Content-Type: text/plain' \
 --header 'Authorization: Bearer <YOUR_API_KEY>' \
 --data '{
-    "name": "knowledge-base-test",
+    "name": "trieve-dataset",
     "provider": "trieve",
-    "vectorStoreSearchPlan": {
-        "scoreThreshold": 0.1,
-        "searchType": "hybrid"
+    "searchPlan": {
+        "searchType": "semantic",
+        "topK": 3,
+        "removeStopWords": true,
+        "scoreThreshold": 0.7
     },
-    "vectorStoreCreatePlan": {
-        "fileIds": ["<FILE_ID>"]
+    "createPlan": {
+        "type": "import",
+        "providerId": "<YOUR_TRIEVE_DATASET_ID>"
     }
 }'
 ```
 
-### **Step 3: Create an Assistant**
+#### Configuration Options
+
+##### Search Plan Options
+
+- **searchType** (required): The search method used for finding relevant chunks. Available options:
+  - `fulltext`: Traditional text search
+  - `semantic`: Semantic similarity search
+  - `hybrid`: Combines fulltext and semantic search
+  - `bm25`: BM25 ranking algorithm
+- **topK** (optional): Number of top chunks to return. Default varies by implementation
+- **removeStopWords** (optional): When true, removes common stop words from the search query. Default: `false`
+- **scoreThreshold** (optional): Filters out chunks based on their similarity score:
+  - For cosine distance: Excludes chunks below the threshold
+  - For Manhattan Distance, Euclidean Distance, and Dot Product: Excludes chunks above the threshold
+  - Set to 0 or omit for no threshold
+
+##### Import Options
+
+- **providerId** (required): The ID of your Trieve dataset that you want to import
+- **type** (required): Must be set to "import" for the BYOD approach
+
+### **Step 2: Create an Assistant**
 
 Create a new assistant in Vapi and, on the right sidebar menu. Add the Knowledge Base to your assistant via the PATCH endpoint. Also make sure you customize your assistant's system prompt to utilize the Knowledge Base for responding to user queries.
 

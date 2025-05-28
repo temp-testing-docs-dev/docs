@@ -43,24 +43,61 @@ curl --location 'https://api.vapi.ai/file' \
 
 ### **Step 2: Create a Knowledge Base**
 
-Use the ID of the uploaded file to create a Knowledge Base. Currently we support [trieve](https://trieve.ai) as a provider.
+Use the ID of the uploaded file to create a Knowledge Base along with the KB configurations.
+
+1. Provider: [trieve](https://trieve.ai)
 
 ```bash
-curl --location 'https://api.vapi.ai/knowledge-base' \
+curl --location 'http://localhost:3001/knowledge-base' \
 --header 'Content-Type: text/plain' \
 --header 'Authorization: Bearer <YOUR_API_KEY>' \
 --data '{
-    "name": "knowledge-base-test",
+    "name": "v2",
     "provider": "trieve",
-    "vectorStoreSearchPlan": {
-        "scoreThreshold": 0.1,
-        "searchType": "hybrid"
+    "searchPlan": {
+        "searchType": "semantic",
+        "topK": 3,
+        "removeStopWords": true,
+        "scoreThreshold": 0.7
     },
-    "vectorStoreCreatePlan": {
-        "fileIds": ["<FILE_ID>"]
+    "createPlan": {
+        "type": "create",
+        "chunkPlans": [
+            {
+                "fileIds": ["<FILE_ID_1>", "<FILE_ID_2>"],
+                "websites": ["<WEBSITE_1>", "<WEBSITE_2>"],
+                "targetSplitsPerChunk": 50,
+                "splitDelimiters": [".!?\n"],
+                "rebalanceChunks": true
+            }
+        ]
     }
 }'
 ```
+
+#### Configuration Options
+
+##### Search Plan Options
+
+- **searchType** (required): The search method used for finding relevant chunks. Available options:
+  - `fulltext`: Traditional text search
+  - `semantic`: Semantic similarity search
+  - `hybrid`: Combines fulltext and semantic search
+  - `bm25`: BM25 ranking algorithm
+- **topK** (optional): Number of top chunks to return. Default varies by implementation
+- **removeStopWords** (optional): When true, removes common stop words from the search query. Default: `false`
+- **scoreThreshold** (optional): Filters out chunks based on their similarity score:
+  - For cosine distance: Excludes chunks below the threshold
+  - For Manhattan Distance, Euclidean Distance, and Dot Product: Excludes chunks above the threshold
+  - Set to 0 or omit for no threshold
+
+##### Chunk Plan Options
+
+- **fileIds** (optional): Array of file IDs to include in the vector store
+- **websites** (optional): Array of website URLs to crawl and include in the vector store
+- **targetSplitsPerChunk** (optional): Number of splits per chunk. Default: `20`
+- **splitDelimiters** (optional): Array of delimiters used to split text before chunking. Default: `[".!?\n"]`
+- **rebalanceChunks** (optional): When true, evenly distributes remainder splits across chunks. For example, 66 splits with `targetSplitsPerChunk: 20` will create 3 chunks with 22 splits each. Default: `true`
 
 ### **Step 3: Create an Assistant**
 

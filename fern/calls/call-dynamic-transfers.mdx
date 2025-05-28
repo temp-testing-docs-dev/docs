@@ -1,0 +1,115 @@
+---
+title: Dynamic Call Transfers
+slug: calls/call-dynamic-transfers
+---
+
+## Before you start
+
+Prerequisites:
+- Access to a server or cloud function that can receive requests from Vapi
+
+## Overview
+
+Dynamic call transfers let your assistant transfer calls to different destinations (phone numbers, SIP, or other assistants) based on real-time context. This guide shows you how to set up a custom transfer tool, connect it to your assistant, handle transfer requests with your server, and respond with the right destination or error.
+
+<Steps>
+  <Step title="Create a custom transfer tool">
+    Create a transfer tool with an empty `destinations` array. This acts as a placeholder so you can define destinations dynamically at runtime.
+    
+    ```bash
+    curl -X POST https://api.vapi.ai/tool \
+         -H "Authorization: Bearer insert-private-key-here" \
+         -H "Content-Type: application/json" \
+         -d '{
+      "type": "transferCall",
+      "destinations": [],
+      "function": {
+        "name": "dynamicDestinationTransferCall"
+      }
+    }'
+    ```
+  </Step>
+
+  <Step title="Link the tool to your assistant">
+    After creating the tool, link it to your assistant. This enables the assistant to trigger the tool during calls.
+  </Step>
+
+  <Step title="Configure the server event">
+    In your assistant settings, select the `transfer-destination-request` server event. This event sends a webhook to your server whenever a transfer is requested, so you can dynamically determine the destination.
+  </Step>
+
+  <Step title="Set up your server to handle transfer requests">
+    Update your assistant's server URL to point to your server. Your server will receive a webhook with call details whenever a transfer is triggered, and should respond with the appropriate destination or an error.
+  </Step>
+
+  <Step title="Trigger the tool and process requests">
+    Use a prompt like this to trigger the transfer tool:
+    
+    ```
+    [TASK]
+    trigger the dynamicDestinationTransferCall tool
+    ```
+    
+    When triggered, the assistant sends a `transfer-destination-request` webhook to your server. The webhook includes call details, transcripts, and messages.
+    
+    **Sample request payload:**
+    ```json
+    {
+      "type": "transfer-destination-request",
+      "artifact": {
+        "messages": [...],
+        "transcript": "Hello, how can I help you?",
+        "messagesOpenAIFormatted": [...]
+      },
+      "assistant": { "id": "assistant123" },
+      "phoneNumber": "+14155552671",
+      "customer": { "id": "customer456" },
+      "call": { "id": "call789", "status": "ongoing" }
+    }
+    ```
+  </Step>
+
+  <Step title="Respond to transfer requests">
+    Your server should respond with either a valid `destination` or an `error`.
+    
+    #### Number destination example
+    ```json
+    {
+      "destination": {
+        "type": "number",
+        "message": "Connecting you to our support line.",
+        "number": "+14155552671",
+        "numberE164CheckEnabled": true,
+        "callerId": "+14155551234",
+        "extension": "101"
+      }
+    }
+    ```
+    
+    #### SIP destination example
+    ```json
+    {
+      "destination": {
+        "type": "sip",
+        "message": "Connecting your call via SIP.",
+        "sipUri": "sip:customer-support@domain.com",
+        "sipHeaders": {
+          "X-Custom-Header": "value"
+        }
+      }
+    }
+    ```
+    
+    #### Error response example
+    ```json
+    {
+      "error": "Invalid destination specified."
+    }
+    ```
+    Every response must include either a `destination` or an `error` to indicate the outcome of the transfer request.
+  </Step>
+</Steps>
+
+## Conclusion
+
+Dynamic call transfers empower your assistant to route calls efficiently based on real-time data. By implementing this flow, you can ensure seamless interactions and provide a better experience for your users.
