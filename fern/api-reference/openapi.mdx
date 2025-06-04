@@ -3,8 +3,59 @@ title: OpenAPI
 slug: api-reference/openapi
 ---
 
-
 <Check>
-  Our OpenAPI is hosted at
+  Our OpenAPI specification is hosted at
   [https://api.vapi.ai/api-json](https://api.vapi.ai/api-json)
 </Check>
+
+## About Our OpenAPI Specification
+
+Vapi's OpenAPI specification provides a comprehensive definition of our REST API endpoints, request/response schemas, and authentication methods. The specification follows OpenAPI 3.0 standards and is automatically generated from our codebase to ensure accuracy and up-to-date documentation.
+
+## Using the OpenAPI Specification
+
+You can use our OpenAPI specification to:
+
+- **Generate client SDKs** in your preferred programming language
+- **Import into API testing tools** like Postman, Insomnia, or Swagger UI
+- **Validate API requests and responses** in your applications
+- **Understand available endpoints** and their parameters
+
+## Key API Endpoints
+
+Our OpenAPI specification includes documentation for all major Vapi endpoints, including:
+
+- **Calls** - Create and manage phone calls
+- **Assistants** - Configure AI voice assistants
+- **Phone Numbers** - Manage phone number resources
+- **Tools** - Define custom functions for assistants
+- **Squads** - Multi-assistant conversation workflows
+
+## Integration Examples
+
+You can integrate with our API using the OpenAPI specification directly or through our pre-built SDKs. Here's a quick example of how to use the specification with common tools:
+
+### Postman Integration
+
+1. Open Postman and click "Import"
+2. Enter the URL: `https://api.vapi.ai/api-json`
+3. Postman will automatically create a collection with all available endpoints
+
+### SDK Generation
+
+Use tools like OpenAPI Generator to create client libraries:
+
+```bash
+openapi-generator-cli generate \
+  -i https://api.vapi.ai/api-json \
+  -g python \
+  -o ./vapi-client
+```
+
+## Authentication
+
+All API endpoints require authentication using your Vapi API key. The OpenAPI specification includes the security schemes and authentication requirements for each endpoint.
+
+## Stay Updated
+
+Our OpenAPI specification is automatically updated whenever we release new features or make changes to the API. Bookmark the URL to always access the latest version.
