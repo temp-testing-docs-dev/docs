@@ -4,7 +4,6 @@ subtitle: What is AssemblyAI?
 slug: providers/transcriber/assembly-ai
 ---
 
-
 **What is AssemblyAI?**
 
 AssemblyAI is a leading provider of AI-driven speech recognition and understanding technologies. Their advanced models enable accurate transcription and analysis of audio data, facilitating applications across various industries.
@@ -29,6 +28,63 @@ AssemblyAI offers a comprehensive suite of AI-driven tools designed to meet dive
 
 - AssemblyAI's real-time transcription feature enables sub-second latency conversion of speech to text, beneficial for live captioning, customer support, and interactive voice response systems, enhancing user experience and operational efficiency.
 
+## Configuring AssemblyAI Transcriber
+
+To use AssemblyAI as your transcriber provider, configure your assistant with the following settings:
+
+```json
+{
+  "transcriber": {
+    "provider": "assembly-ai",
+    "enableUniversalStreamingApi": true
+  }
+}
+```
+
+### enableUniversalStreamingApi
+
+The `enableUniversalStreamingApi` property is a new configuration option for AssemblyAI transcriber that allows you to enable their Universal Streaming API. This property is optional and defaults to `false` if not specified.
+
+**When to use:**
+- **Enable (`true`)**: Use when you need the most accurate transcription results and can accept slightly higher latency. The Universal Streaming API provides improved accuracy for diverse languages and accents.
+- **Disable (`false`)**: Use when you need the lowest possible latency for real-time applications where speed is more critical than maximum accuracy.
+
+**Example configurations:**
+
+**High Accuracy Configuration:**
+```json
+{
+  "transcriber": {
+    "provider": "assembly-ai",
+    "enableUniversalStreamingApi": true,
+    "language": "en"
+  }
+}
+```
+
+**Low Latency Configuration:**
+```json
+{
+  "transcriber": {
+    "provider": "assembly-ai",
+    "enableUniversalStreamingApi": false,
+    "language": "en"
+  }
+}
+```
+
+## API Key Configuration
+
+To use AssemblyAI as your transcriber, you'll need to configure your API key:
+
+1. Create an API key in the [AssemblyAI dashboard](https://www.assemblyai.com/app/account)
+2. Add your API key in the Vapi dashboard under the "Transcriber Providers" page
+3. AssemblyAI errors will now be surfaced in the `endedReason` of `Call`, `ServerMessageEndOfCallReport`, and `ServerMessageStatusUpdate`
+
+<Frame caption="Specify AssemblyAI API keys in the Transcriber Providers page">
+  <img src="../static/images/changelog/assembly-ai.png" />
+</Frame>
+
 **Use Cases for AssemblyAI**
 
 AssemblyAI's versatile technology serves multiple industries, enhancing operations and delivering valuable insights:
@@ -39,7 +95,7 @@ AssemblyAI's versatile technology serves multiple industries, enhancing operatio
 
 **Media And Content Creation**
 
-- In the media sector, AssemblyAI’s speech-to-text solutions are used to transcribe interviews, podcasts, and video content. This makes content searchable, accessible, and easier to manage, enhancing the efficiency of media production workflows.
+- In the media sector, AssemblyAI's speech-to-text solutions are used to transcribe interviews, podcasts, and video content. This makes content searchable, accessible, and easier to manage, enhancing the efficiency of media production workflows.
 
 **Innovation and Research:**
 

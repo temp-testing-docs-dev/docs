@@ -101,6 +101,17 @@ You can customize the following properties in your assistant's `analysisPlan`:
   }
   ```
 
+### Minimum messages threshold
+- Controls when call analysis is triggered based on the number of messages in the conversation.
+- **Default:** Analysis runs on every call regardless of message count.
+- **Customize:**
+  ```json
+  {
+    "minMessagesThreshold": 5
+  }
+  ```
+- **Use case:** Set this to prevent analysis from running on very short calls (e.g., hang-ups or calls with minimal interaction) to save costs and focus analysis on meaningful conversations.
+
 ### Combine prompts and rubrics
 - You can combine prompts and rubrics for detailed instructions:
   ```json
