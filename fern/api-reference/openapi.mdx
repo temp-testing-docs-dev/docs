@@ -3,8 +3,94 @@ title: OpenAPI
 slug: api-reference/openapi
 ---
 
+## Overview
+
+Vapi provides a comprehensive OpenAPI specification that describes all available API endpoints, request/response schemas, and authentication methods. This specification serves as the foundation for our API documentation, SDK generation, and developer tooling.
 
 <Check>
-  Our OpenAPI is hosted at
+  Our OpenAPI specification is hosted at
   [https://api.vapi.ai/api-json](https://api.vapi.ai/api-json)
 </Check>
+
+## What's Included
+
+The OpenAPI specification includes detailed information about:
+
+- **Authentication**: Bearer token authentication methods
+- **Endpoints**: All REST API endpoints for managing assistants, calls, tools, and more
+- **Request Schemas**: Complete data models for API requests
+- **Response Schemas**: Detailed response formats and error codes
+- **Parameters**: Query parameters, path parameters, and request body specifications
+
+## Using the OpenAPI Specification
+
+### API Documentation
+
+Our interactive API documentation is generated directly from the OpenAPI specification:
+
+<Card title="Interactive API Reference" icon="book" href="/api-reference">
+  Explore all endpoints with live examples and testing capabilities
+</Card>
+
+### SDK Generation
+
+The OpenAPI specification is used to generate our official SDKs across multiple programming languages:
+
+- [TypeScript/JavaScript SDK](https://github.com/VapiAI/server-sdk-typescript)
+- [Python SDK](https://github.com/VapiAI/server-sdk-python)
+- [Java SDK](https://github.com/VapiAI/server-sdk-java)
+- [Ruby SDK](https://github.com/VapiAI/server-sdk-ruby)
+- [C# SDK](https://github.com/VapiAI/server-sdk-csharp)
+- [Go SDK](https://github.com/VapiAI/server-sdk-go)
+
+### Custom Tooling
+
+You can use the OpenAPI specification to generate your own client libraries, documentation, or testing tools using popular OpenAPI generators like:
+
+- [OpenAPI Generator](https://openapi-generator.tech/)
+- [Swagger Codegen](https://swagger.io/tools/swagger-codegen/)
+- [Fern](https://buildwithfern.com/)
+
+## Recent Updates
+
+The OpenAPI specification is regularly updated to reflect new features, endpoint changes, and improvements to the Vapi platform. Recent significant updates include:
+
+- Enhanced assistant configuration options
+- New workflow and blocks functionality
+- Expanded call management capabilities
+- Additional provider integrations
+- Improved error handling and response schemas
+
+## Validation and Standards
+
+Our OpenAPI specification follows OpenAPI 3.0 standards and is regularly validated to ensure:
+
+- **Accuracy**: All endpoints and schemas match actual API behavior
+- **Completeness**: Full coverage of available functionality
+- **Consistency**: Standardized naming conventions and patterns
+- **Compatibility**: Support for common OpenAPI tooling
+
+## Getting Help
+
+If you encounter any issues with the OpenAPI specification or need assistance with API integration:
+
+<CardGroup cols={2}>
+  <Card
+    title="Join Our Discord"
+    icon="fa-brands fa-discord"
+    iconType="solid"
+    color="#5A65EA"
+    href="https://discord.gg/pUFNcf2WmH"
+  >
+    Connect with our team and other developers using Vapi.
+  </Card>
+  <Card
+    title="Email Support"
+    icon="mailbox"
+    iconType="solid"
+    color="#7a7f85"
+    href="mailto:support@vapi.ai"
+  >
+    Send our support team an email for technical assistance.
+  </Card>
+</CardGroup>
