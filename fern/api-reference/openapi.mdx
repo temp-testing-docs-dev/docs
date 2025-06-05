@@ -3,8 +3,125 @@ title: OpenAPI
 slug: api-reference/openapi
 ---
 
-
 <Check>
-  Our OpenAPI is hosted at
+  Our OpenAPI specification is hosted at
   [https://api.vapi.ai/api-json](https://api.vapi.ai/api-json)
 </Check>
+
+## What's New
+
+Our OpenAPI specification has been significantly updated with comprehensive improvements including:
+
+- **Enhanced API Coverage**: Added detailed specifications for new endpoints and updated existing ones
+- **Improved Schema Definitions**: More precise data models and validation rules
+- **Better Documentation**: Enhanced descriptions and examples for all endpoints
+- **New Features**: Support for the latest Vapi capabilities including assistant overrides, updated AI edge conditions, and new call termination reasons
+
+## Key API Sections
+
+The OpenAPI specification covers all major Vapi functionality:
+
+### Core Resources
+- **Assistants**: Create, configure, and manage AI voice assistants
+- **Calls**: Initiate outbound calls and manage call lifecycle
+- **Phone Numbers**: Manage phone number provisioning and configuration
+- **Tools**: Configure custom tools and integrations
+
+### Provider Integrations
+- **Models**: OpenAI, Anthropic, and other LLM providers
+- **Voices**: ElevenLabs, PlayHT, and other voice synthesis providers  
+- **Transcribers**: Deepgram and other speech-to-text providers
+
+### Advanced Features
+- **Workflows**: Multi-step conversation flows and routing
+- **Webhooks**: Real-time event handling and integrations
+- **Analytics**: Call metrics and performance data
+
+## Using the OpenAPI Specification
+
+### Interactive API Explorer
+Visit [https://api.vapi.ai/api](https://api.vapi.ai/api) to explore the API interactively with our built-in API explorer.
+
+### Code Generation
+Use the OpenAPI specification to generate client SDKs in your preferred language:
+
+```bash
+# Generate TypeScript client
+npx @openapitools/openapi-generator-cli generate \
+  -i https://api.vapi.ai/api-json \
+  -g typescript-axios \
+  -o ./vapi-client
+
+# Generate Python client  
+npx @openapitools/openapi-generator-cli generate \
+  -i https://api.vapi.ai/api-json \
+  -g python \
+  -o ./vapi-client-python
+```
+
+### Schema Validation
+Use the OpenAPI schema to validate requests and responses in your applications:
+
+```javascript
+import { validate } from 'openapi-request-validator';
+import spec from 'https://api.vapi.ai/api-json';
+
+const validator = validate(spec, '/assistants', 'post');
+const result = validator(requestBody);
+```
+
+## Recent Updates
+
+Based on the latest API changes, the OpenAPI specification now includes:
+
+1. **Updated AI Edge Conditions**: The `matches` property has been renamed to `prompt` for more intuitive natural language conditions
+2. **Assistant Overrides**: New `assistantOverrides` parameter for customer-specific customization
+3. **Enhanced Error Handling**: New `endedReason` enums for better call termination insights
+4. **Expanded Provider Support**: Additional configuration options for new voice and model providers
+
+## Integration Examples
+
+### REST API Usage
+```bash
+# Create an assistant using the OpenAPI specification
+curl -X POST https://api.vapi.ai/assistant \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Customer Support Assistant",
+    "model": {
+      "provider": "openai", 
+      "model": "gpt-4o"
+    },
+    "voice": {
+      "provider": "11labs",
+      "voiceId": "21m00Tcm4TlvDq8ikWAM"
+    }
+  }'
+```
+
+### Using Official SDKs
+Our official SDKs are built from this OpenAPI specification:
+
+```typescript
+import { VapiClient } from '@vapi-ai/server-sdk';
+
+const vapi = new VapiClient({
+  token: process.env.VAPI_API_KEY
+});
+
+const assistant = await vapi.assistants.create({
+  name: "Customer Support Assistant",
+  model: {
+    provider: "openai",
+    model: "gpt-4o"
+  }
+});
+```
+
+## Resources
+
+- [Interactive API Reference](https://api.vapi.ai/api)
+- [Server SDK Documentation](/quickstart/web#server-side-call-management)
+- [Webhook Integration Guide](/quickstart/web#webhook-integration)
+- [Discord Community](https://discord.gg/pUFNcf2WmH) for API support
