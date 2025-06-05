@@ -1,5 +1,16 @@
-1.  **New GPT-4.1 Models Available**: You can now use `'gpt-4.1'`, `'gpt-4.1-mini'`, and `'gpt-4.1-nano'` as options for the `model` and `fallbackModels` with your [OpenAI models](https://api.vapi.ai/api#:~:text=OpenAIModel). These models may offer improved performance or features over previous versions.
+---
+title: API Enhancements - April 15, 2025
+slug: changelog/2025-04-15
+---
 
-<Frame caption="New GPT-4.1 Models Available">
-    <img src="../static/images/changelog/gpt-4.1-models.png" alt="New GPT-4.1 Models Available" />
+1. **AssemblyAI Universal Streaming API Support**: You can now configure AssemblyAI's Universal Streaming API to improve transcription accuracy and performance. Specify `AssemblyAITranscriber.useUniversalStreaming` to enable this enhanced streaming model for better real-time speech recognition.
+
+2. **Transfer Tool Timeout Configuration**: Added timeout settings for call transfer operations. You can now configure `TransferTool.timeoutSeconds` to control how long the system waits during transfer attempts before timing out. This provides better control over call flow and prevents indefinite transfer delays.
+
+3. **Analysis Plan Message Threshold**: Introduced `AnalysisPlan.messageThreshold` to control when call analysis is triggered based on the number of messages exchanged during a call. Set this threshold to ensure analysis only runs on substantive conversations, helping optimize processing resources and focus on meaningful interactions.
+
+<Frame caption="Configure message threshold for call analysis">
+    <img src="../static/images/changelog/analysis-plan-message-threshold.png" alt="Analysis Plan Message Threshold" />
 </Frame>
+
+These enhancements provide better control over transcription quality, call transfer behavior, and analysis processing, allowing for more efficient and customizable voice AI implementations.
