@@ -3,8 +3,169 @@ title: OpenAPI
 slug: api-reference/openapi
 ---
 
-
 <Check>
   Our OpenAPI is hosted at
   [https://api.vapi.ai/api-json](https://api.vapi.ai/api-json)
 </Check>
+
+## Overview
+
+The Vapi OpenAPI specification provides a comprehensive definition of our REST API endpoints, request/response schemas, and authentication methods. This machine-readable specification enables automatic code generation, API testing, and integration with various development tools.
+
+## Using the OpenAPI Specification
+
+### API Documentation and Testing
+
+You can explore and test our API directly using the interactive documentation:
+
+- **Swagger UI**: [https://api.vapi.ai/api](https://api.vapi.ai/api)
+- **OpenAPI JSON**: [https://api.vapi.ai/api-json](https://api.vapi.ai/api-json)
+
+### Code Generation
+
+Use the OpenAPI specification to generate client libraries in your preferred programming language:
+
+```bash
+# Generate TypeScript client
+openapi-generator generate -i https://api.vapi.ai/api-json -g typescript-axios -o ./vapi-client
+
+# Generate Python client
+openapi-generator generate -i https://api.vapi.ai/api-json -g python -o ./vapi-python-client
+
+# Generate Java client
+openapi-generator generate -i https://api.vapi.ai/api-json -g java -o ./vapi-java-client
+```
+
+### API Testing Tools
+
+Import the OpenAPI specification into testing tools like:
+
+- **Postman**: Import the JSON specification to create a complete collection
+- **Insomnia**: Load the specification for organized API testing
+- **Newman**: Use for automated API testing in CI/CD pipelines
+
+## Authentication
+
+All API endpoints require authentication using your private API key:
+
+```bash
+curl -H "Authorization: Bearer YOUR_PRIVATE_API_KEY" \
+     https://api.vapi.ai/assistant
+```
+
+<Warning>
+  Never use your private API key in client-side applications. Use your public API key for client-side integrations with the Web SDK.
+</Warning>
+
+## Key API Endpoints
+
+The OpenAPI specification includes all available endpoints. Here are some of the most commonly used:
+
+### Assistants
+- `GET /assistant` - List all assistants
+- `POST /assistant` - Create a new assistant
+- `GET /assistant/{id}` - Get assistant details
+- `PATCH /assistant/{id}` - Update an assistant
+- `DELETE /assistant/{id}` - Delete an assistant
+
+### Calls
+- `GET /call` - List all calls
+- `POST /call/phone` - Create an outbound phone call
+- `POST /call/web` - Create a web call
+- `GET /call/{id}` - Get call details
+
+### Phone Numbers
+- `GET /phone-number` - List phone numbers
+- `POST /phone-number` - Add a phone number
+- `GET /phone-number/{id}` - Get phone number details
+
+### Tools
+- `GET /tool` - List all tools
+- `POST /tool` - Create a custom tool
+- `GET /tool/{id}` - Get tool details
+
+## Response Formats
+
+All API responses follow consistent patterns as defined in the OpenAPI specification:
+
+```json
+{
+  "success": true,
+  "data": {
+    // Response data
+  },
+  "pagination": {
+    "page": 1,
+    "limit": 100,
+    "total": 250
+  }
+}
+```
+
+Error responses include detailed information:
+
+```json
+{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Invalid request parameters",
+    "details": [
+      {
+        "field": "phoneNumber",
+        "message": "Phone number must be in E.164 format"
+      }
+    ]
+  }
+}
+```
+
+## Rate Limits
+
+API rate limits are documented in the OpenAPI specification and enforced per API key:
+
+- **Standard**: 100 requests per minute
+- **Premium**: 1000 requests per minute
+- **Enterprise**: Custom limits available
+
+Rate limit headers are included in all responses:
+
+```
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 95
+X-RateLimit-Reset: 1640995200
+```
+
+## Webhooks
+
+The OpenAPI specification also documents webhook event schemas for real-time updates:
+
+- **call.started** - Call initiation events
+- **call.ended** - Call completion events  
+- **message** - Real-time conversation events
+- **function-call** - Tool execution events
+
+## SDK Integration
+
+While you can use the OpenAPI specification to generate your own clients, we recommend using our official SDKs for the best developer experience:
+
+<CardGroup cols={2}>
+  <Card title="Web SDK" icon="globe" href="/quickstart/web">
+    Client-side voice interfaces
+  </Card>
+  <Card title="Server SDKs" icon="server" href="/quickstart/web">
+    Backend call management
+  </Card>
+</CardGroup>
+
+## Staying Updated
+
+The OpenAPI specification is automatically updated with new features and improvements. To stay current:
+
+1. **Bookmark** the specification URL for easy access
+2. **Subscribe** to our changelog for API updates
+3. **Join** our Discord community for announcements
+
+<Card title="API Updates" icon="bell" href="https://discord.gg/pUFNcf2WmH">
+  Get notified about API changes and new features
+</Card>
