@@ -3,8 +3,40 @@ title: OpenAPI
 slug: api-reference/openapi
 ---
 
-
 <Check>
   Our OpenAPI is hosted at
   [https://api.vapi.ai/api-json](https://api.vapi.ai/api-json)
 </Check>
+
+## What's New
+
+Our OpenAPI specification has been significantly updated with comprehensive improvements and additions. The specification now includes enhanced endpoint documentation, improved data models, and expanded API coverage to better serve your development needs.
+
+## Using the OpenAPI Specification
+
+The OpenAPI specification provides a complete reference for all available API endpoints, request/response schemas, and authentication methods. You can use this specification to:
+
+- Generate client libraries in your preferred programming language
+- Import into API testing tools like Postman or Insomnia
+- Integrate with API documentation tools
+- Validate API requests and responses
+
+## Integration Examples
+
+You can easily integrate our OpenAPI specification into your development workflow:
+
+```bash
+# Download the OpenAPI specification
+curl https://api.vapi.ai/api-json -o vapi-openapi.json
+```
+
+```javascript
+// Example: Using the specification with OpenAPI Generator
+// Generate a client library for your preferred language
+npx @openapitools/openapi-generator-cli generate \
+  -i https://api.vapi.ai/api-json \
+  -g javascript \
+  -o ./vapi-client
+```
+
+For the most up-to-date API reference and detailed endpoint documentation, always refer to the live OpenAPI specification at the URL above.
