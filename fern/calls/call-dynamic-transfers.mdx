@@ -7,14 +7,27 @@ slug: calls/call-dynamic-transfers
 
 Prerequisites:
 - Access to a server or cloud function that can receive requests from Vapi
+- Understanding of dynamic call transfer setup (see [Dynamic Call Transfers](/calls/call-dynamic-transfers) guide)
 
 ## Overview
 
-Dynamic call transfers let your assistant transfer calls to different destinations (phone numbers, SIP, or other assistants) based on real-time context. This guide shows you how to set up a custom transfer tool, connect it to your assistant, handle transfer requests with your server, and respond with the right destination or error.
+This guide extends the dynamic call transfer functionality with timeout configuration. You can now specify how long the system should wait for a transfer destination to be answered before considering it failed. This is particularly useful for managing call flows when the destination is unavailable or busy.
+
+## Timeout Configuration
+
+When setting up your transfer destinations, you can now include a `timeout` parameter to control how long to wait for the destination to answer.
+
+### Timeout Parameters
+
+- **Default timeout**: 60 seconds
+- **Valid range**: 1 to 300 seconds (5 minutes)
+- **Behavior**: If the destination doesn't answer within the specified timeout, the transfer is considered failed
+
+## Setting Up Transfer with Timeout
 
 <Steps>
-  <Step title="Create a custom transfer tool">
-    Create a transfer tool with an empty `destinations` array. This acts as a placeholder so you can define destinations dynamically at runtime.
+  <Step title="Create a transfer tool with timeout">
+    When creating your transfer tool, you can specify timeout values for each destination:
     
     ```bash
     curl -X POST https://api.vapi.ai/tool \
@@ -22,94 +35,171 @@ Dynamic call transfers let your assistant transfer calls to different destinatio
          -H "Content-Type: application/json" \
          -d '{
       "type": "transferCall",
-      "destinations": [],
+      "destinations": [
+        {
+          "type": "number",
+          "number": "+14155552671",
+          "timeout": 30,
+          "message": "Connecting you to our support line."
+        }
+      ],
       "function": {
-        "name": "dynamicDestinationTransferCall"
+        "name": "transferCallWithTimeout",
+        "description": "Transfer call to support with 30 second timeout"
       }
     }'
     ```
   </Step>
 
-  <Step title="Link the tool to your assistant">
-    After creating the tool, link it to your assistant. This enables the assistant to trigger the tool during calls.
-  </Step>
-
-  <Step title="Configure the server event">
-    In your assistant settings, select the `transfer-destination-request` server event. This event sends a webhook to your server whenever a transfer is requested, so you can dynamically determine the destination.
-  </Step>
-
-  <Step title="Set up your server to handle transfer requests">
-    Update your assistant's server URL to point to your server. Your server will receive a webhook with call details whenever a transfer is triggered, and should respond with the appropriate destination or an error.
-  </Step>
-
-  <Step title="Trigger the tool and process requests">
-    Use a prompt like this to trigger the transfer tool:
+  <Step title="Configure dynamic transfers with timeout">
+    For dynamic transfers, include the timeout in your server response:
     
-    ```
-    [TASK]
-    trigger the dynamicDestinationTransferCall tool
-    ```
-    
-    When triggered, the assistant sends a `transfer-destination-request` webhook to your server. The webhook includes call details, transcripts, and messages.
-    
-    **Sample request payload:**
-    ```json
-    {
-      "type": "transfer-destination-request",
-      "artifact": {
-        "messages": [...],
-        "transcript": "Hello, how can I help you?",
-        "messagesOpenAIFormatted": [...]
-      },
-      "assistant": { "id": "assistant123" },
-      "phoneNumber": "+14155552671",
-      "customer": { "id": "customer456" },
-      "call": { "id": "call789", "status": "ongoing" }
-    }
-    ```
-  </Step>
-
-  <Step title="Respond to transfer requests">
-    Your server should respond with either a valid `destination` or an `error`.
-    
-    #### Number destination example
+    #### Number destination with timeout
     ```json
     {
       "destination": {
         "type": "number",
         "message": "Connecting you to our support line.",
         "number": "+14155552671",
+        "timeout": 45,
         "numberE164CheckEnabled": true,
-        "callerId": "+14155551234",
-        "extension": "101"
+        "callerId": "+14155551234"
       }
     }
     ```
     
-    #### SIP destination example
+    #### SIP destination with timeout
     ```json
     {
       "destination": {
         "type": "sip",
         "message": "Connecting your call via SIP.",
         "sipUri": "sip:customer-support@domain.com",
+        "timeout": 90,
         "sipHeaders": {
           "X-Custom-Header": "value"
         }
       }
     }
     ```
+  </Step>
+
+  <Step title="Handle timeout scenarios">
+    When a transfer timeout occurs, you can handle it in several ways:
     
-    #### Error response example
+    #### Return to assistant
+    If no timeout handling is specified, the call returns to the assistant, which can then inform the user and offer alternatives.
+    
+    #### Specify fallback destinations
+    You can provide multiple destinations with different timeouts:
+    
     ```json
     {
-      "error": "Invalid destination specified."
+      "destinations": [
+        {
+          "type": "number",
+          "number": "+14155552671",
+          "timeout": 30,
+          "message": "Connecting to primary support..."
+        },
+        {
+          "type": "number", 
+          "number": "+14155552672",
+          "timeout": 20,
+          "message": "Trying alternative support line..."
+        }
+      ]
     }
     ```
-    Every response must include either a `destination` or an `error` to indicate the outcome of the transfer request.
   </Step>
 </Steps>
 
+## Timeout Behavior
+
+### What happens during timeout
+
+1. **Transfer initiated**: Call transfer begins to the specified destination
+2. **Waiting period**: System waits for the configured timeout duration
+3. **No answer detected**: If destination doesn't answer within timeout
+4. **Fallback action**: Call returns to assistant or tries next destination
+
+### Timeout vs. busy signals
+
+- **Timeout**: Destination rings but doesn't answer within the specified time
+- **Busy**: Destination immediately returns a busy signal
+- **Failed**: Destination is unreachable or invalid
+
+All these scenarios can be handled by your assistant's logic or fallback destinations.
+
+## Best Practices
+
+### Choosing appropriate timeouts
+
+- **Short timeouts (10-20 seconds)**: For quick screening or when multiple fallback options exist
+- **Medium timeouts (30-60 seconds)**: Standard for most business scenarios  
+- **Long timeouts (90+ seconds)**: When the destination is critical and alternatives are limited
+
+### Error handling
+
+Configure your assistant to handle timeout scenarios gracefully:
+
+```json
+{
+  "model": {
+    "messages": [
+      {
+        "role": "system",
+        "content": "If a transfer times out, apologize to the customer and offer to take a message or schedule a callback."
+      }
+    ]
+  }
+}
+```
+
+### Multiple destination strategy
+
+Use progressively shorter timeouts for fallback destinations:
+
+```json
+{
+  "destinations": [
+    {
+      "type": "number",
+      "number": "+14155551111",
+      "timeout": 60,
+      "message": "Connecting to our primary support team..."
+    },
+    {
+      "type": "number",
+      "number": "+14155552222", 
+      "timeout": 30,
+      "message": "Trying our backup support line..."
+    },
+    {
+      "type": "number",
+      "number": "+14155553333",
+      "timeout": 20,
+      "message": "Connecting to our emergency support..."
+    }
+  ]
+}
+```
+
+## Troubleshooting
+
+### Common timeout issues
+
+- **Timeout too short**: Legitimate calls may be dropped before the destination can answer
+- **Timeout too long**: Users may hang up while waiting, leading to poor experience
+- **Invalid timeout values**: Values outside 1-300 seconds will use the default (60 seconds)
+
+### Monitoring and optimization
+
+Monitor your transfer success rates and adjust timeouts based on:
+- Average answer times for your destinations
+- User abandonment rates during transfers
+- Business requirements and customer expectations
+
 ## Conclusion
 
-Dynamic call transfers empower your assistant to route calls efficiently based on real-time data. By implementing this flow, you can ensure seamless interactions and provide a better experience for your users.
+Timeout configuration for dynamic call transfers provides fine-grained control over call flow management. By setting appropriate timeouts and implementing proper fallback strategies, you can ensure reliable call transfers while maintaining a good user experience even when destinations are unavailable.

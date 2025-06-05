@@ -13,6 +13,37 @@ Call analysis automatically summarizes and evaluates every call for insights and
 
 Results are attached to the call record and can be viewed in the call instance dashboard or retrieved via the API. You can customize the analysis using prompts and schemas in your assistant's `analysisPlan`.
 
+## Minimum messages threshold
+
+By default, call analysis runs for all calls regardless of length. However, you can configure a minimum threshold of messages that must be exchanged before analysis is triggered using the `minMessagesThreshold` parameter.
+
+This is useful for filtering out very short calls (like hang-ups or wrong numbers) that may not provide meaningful insights for analysis.
+
+### Configuration
+
+Set the minimum messages threshold in your assistant's `analysisPlan`:
+
+```json
+{
+  "analysisPlan": {
+    "minMessagesThreshold": 5
+  }
+}
+```
+
+### Behavior
+
+- **Messages count**: Both user and assistant messages count toward the threshold
+- **Analysis skip**: If a call has fewer messages than the threshold, no analysis will be performed
+- **Default value**: If not specified, analysis runs for all calls (effectively `minMessagesThreshold: 0`)
+- **Call records**: Calls that don't meet the threshold will still appear in your call logs, but without analysis data
+
+### Example scenarios
+
+- `minMessagesThreshold: 1` - Analysis runs for calls with at least 1 message exchange
+- `minMessagesThreshold: 3` - Analysis only runs for calls with 3+ messages (filtering out immediate hang-ups)
+- `minMessagesThreshold: 10` - Analysis only runs for substantial conversations with 10+ messages
+
 ## Customization
 
 You can customize the following properties in your assistant's `analysisPlan`:
@@ -110,6 +141,31 @@ You can customize the following properties in your assistant's `analysisPlan`:
   }
   ```
 
+### Complete example with minimum threshold
+
+Here's a complete example configuration that includes the minimum messages threshold along with other analysis settings:
+
+```json
+{
+  "analysisPlan": {
+    "minMessagesThreshold": 3,
+    "summaryPrompt": "Provide a concise summary of this customer service call, highlighting key issues and resolutions.",
+    "structuredDataPrompt": "Extract customer information and call outcomes from this transcript.",
+    "structuredDataSchema": {
+      "type": "object",
+      "properties": {
+        "customerName": { "type": "string" },
+        "issueResolved": { "type": "boolean" },
+        "followUpRequired": { "type": "boolean" }
+      },
+      "required": ["issueResolved"]
+    },
+    "successEvaluationPrompt": "Evaluate if this call successfully addressed the customer's needs.",
+    "successEvaluationRubric": "PassFail"
+  }
+}
+```
+
 ## Results
 
 - Once analysis is complete, results are attached to the call record.
@@ -118,5 +174,6 @@ You can customize the following properties in your assistant's `analysisPlan`:
   - Call summary
   - Structured data
   - Success evaluation and rubric
+- Calls that don't meet the minimum messages threshold will not have analysis results
 
-By customizing these properties, you can tailor call analysis to your needs and gain valuable insights from every call.
+By customizing these properties, including the minimum messages threshold, you can tailor call analysis to your needs and gain valuable insights from meaningful conversations while filtering out noise from very short calls.
