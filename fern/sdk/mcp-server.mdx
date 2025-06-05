@@ -66,16 +66,14 @@ The Vapi MCP Server exposes these actions as MCP tools:
 | `list_assistants`      | List all Vapi assistants                         | Show all configured assistants                |
 | `create_assistant`     | Create a new Vapi assistant                      | Add a new assistant for a use case            |
 | `get_assistant`        | Get a Vapi assistant by ID                       | View assistant config                         |
-| `list_calls`           | List all calls                                   | Review call activity                          |
-| `create_call`          | Create an outbound call (now or scheduled)       | Initiate or schedule a call                   |
-| `get_call`             | Get details for a specific call                  | Check status or result of a call              |
+| `create_phone_call`    | Create an outbound phone call (now or scheduled) | Initiate or schedule a phone call             |
 | `list_phone_numbers`   | List all Vapi phone numbers                      | See available numbers                         |
 | `get_phone_number`     | Get details of a specific phone number           | Inspect a phone number                        |
 | `list_tools`           | List all available Vapi tools                    | Tool discovery                                |
 | `get_tool`             | Get details of a specific tool                   | Tool integration info                         |
 
 <Note>
-  <b>Scheduling calls:</b> The <code>create_call</code> action supports scheduling with the optional <code>scheduledAt</code> parameter.
+  <b>Scheduling calls:</b> The <code>create_phone_call</code> action supports scheduling with the optional <code>scheduledAt</code> parameter.
 </Note>
 
 ---
@@ -404,24 +402,24 @@ async function main() {
         console.log(`- ${phoneNumber.phoneNumber} (${phoneNumber.id})`);
       });
 
-      // Create a call using the first assistant and first phone number
+      // Create a phone call using the first assistant and first phone number
       const phoneNumberId = phoneNumbers[0].id;
       const assistantId = assistants[0].id;
-      console.log(`\nCreating a call using assistant (${assistantId}) and phone number (${phoneNumberId})...`);
+      console.log(`\nCreating a phone call using assistant (${assistantId}) and phone number (${phoneNumberId})...`);
       const createCallResponse = await mcpClient.callTool({
-        name: 'create_call',
+        name: 'create_phone_call',
         arguments: {
           assistantId: assistantId,
           phoneNumberId: phoneNumberId,
           customer: {
-            phoneNumber: "+1234567890"  // Replace with actual customer phone number
+            number: "+1234567890"  // Replace with actual customer phone number
           }
           // Optional: schedule a call for the future
           // scheduledAt: "2025-04-15T15:30:00Z"
         },
       });
       const createdCall = parseToolResponse(createCallResponse);
-      console.log('Call created:', JSON.stringify(createdCall, null, 2));
+      console.log('Phone call created:', JSON.stringify(createdCall, null, 2));
     } finally {
       console.log('\nDisconnecting from server...');
       await mcpClient.close();
@@ -539,24 +537,24 @@ async function main() {
         console.log(`- ${phoneNumber.phoneNumber} (${phoneNumber.id})`);
       });
 
-      // Create a call using the first assistant and first phone number
+      // Create a phone call using the first assistant and first phone number
       const phoneNumberId = phoneNumbers[0].id;
       const assistantId = assistants[0].id;
-      console.log(`\nCreating a call using assistant (${assistantId}) and phone number (${phoneNumberId})...`);
+      console.log(`\nCreating a phone call using assistant (${assistantId}) and phone number (${phoneNumberId})...`);
       const createCallResponse = await mcpClient.callTool({
-        name: 'create_call',
+        name: 'create_phone_call',
         arguments: {
           assistantId: assistantId,
           phoneNumberId: phoneNumberId,
           customer: {
-            phoneNumber: "+1234567890"  // Replace with actual customer phone number
+            number: "+1234567890"  // Replace with actual customer phone number
           }
           // Optional: schedule a call for the future
           // scheduledAt: "2025-04-15T15:30:00Z"
         },
       });
       const createdCall = parseToolResponse(createCallResponse);
-      console.log('Call created:', JSON.stringify(createdCall, null, 2));
+      console.log('Phone call created:', JSON.stringify(createdCall, null, 2));
     } finally {
       console.log('\nDisconnecting from server...');
       await mcpClient.close();
