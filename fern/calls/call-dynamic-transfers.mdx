@@ -81,7 +81,8 @@ Dynamic call transfers let your assistant transfer calls to different destinatio
         "number": "+14155552671",
         "numberE164CheckEnabled": true,
         "callerId": "+14155551234",
-        "extension": "101"
+        "extension": "101",
+        "timeout": 30
       }
     }
     ```
@@ -95,7 +96,8 @@ Dynamic call transfers let your assistant transfer calls to different destinatio
         "sipUri": "sip:customer-support@domain.com",
         "sipHeaders": {
           "X-Custom-Header": "value"
-        }
+        },
+        "timeout": 45
       }
     }
     ```
@@ -110,6 +112,70 @@ Dynamic call transfers let your assistant transfer calls to different destinatio
   </Step>
 </Steps>
 
+## Transfer Timeout Configuration
+
+The `timeout` property allows you to specify how long (in seconds) the system should wait for the transfer destination to answer before considering the transfer failed. This is particularly useful for managing call flow and user experience.
+
+### Timeout Behavior
+
+- **Default timeout**: If no timeout is specified, the system uses a default timeout value
+- **Timeout range**: The timeout value should typically be between 10-60 seconds
+- **Timeout exceeded**: If the destination doesn't answer within the specified timeout, the call returns to the assistant
+- **Immediate answer**: If the destination answers before the timeout, the transfer completes successfully
+
+### Usage Examples
+
+#### Number destination with timeout
+```json
+{
+  "destination": {
+    "type": "number",
+    "number": "+14155552671",
+    "message": "Connecting you to our sales team.",
+    "timeout": 20
+  }
+}
+```
+
+#### SIP destination with timeout
+```json
+{
+  "destination": {
+    "type": "sip",
+    "sipUri": "sip:support@company.com",
+    "message": "Transferring you to technical support.",
+    "timeout": 30
+  }
+}
+```
+
+### Best Practices for Timeout Configuration
+
+- **Customer service lines**: Use shorter timeouts (15-25 seconds) to avoid long wait times
+- **Internal transfers**: Use longer timeouts (30-45 seconds) for internal extensions that may take longer to answer
+- **Emergency lines**: Use shorter timeouts (10-15 seconds) with fallback options
+- **Automated systems**: Use longer timeouts (45-60 seconds) for IVR systems that may need processing time
+
+### Handling Timeout Scenarios
+
+When a transfer times out, you can implement fallback logic:
+
+```json
+{
+  "destination": {
+    "type": "number",
+    "number": "+14155552671",
+    "message": "Connecting you to our support team.",
+    "timeout": 25,
+    "fallbackMessage": "The support team is currently unavailable. Let me help you with your request."
+  }
+}
+```
+
+<Note>
+The timeout property is optional. If not specified, the system will use the default timeout configured for your account.
+</Note>
+
 ## Conclusion
 
-Dynamic call transfers empower your assistant to route calls efficiently based on real-time data. By implementing this flow, you can ensure seamless interactions and provide a better experience for your users.
+Dynamic call transfers with timeout configuration empower your assistant to route calls efficiently based on real-time data while maintaining control over call flow timing. By implementing transfer timeouts, you can ensure seamless interactions and provide a better experience for your users, even when transfer destinations are unavailable.
