@@ -3,8 +3,225 @@ title: OpenAPI
 slug: api-reference/openapi
 ---
 
-
 <Check>
-  Our OpenAPI is hosted at
+  Our OpenAPI specification is hosted at
   [https://api.vapi.ai/api-json](https://api.vapi.ai/api-json)
 </Check>
+
+## What's New
+
+The Vapi OpenAPI specification has been significantly updated with comprehensive API definitions, new endpoints, and enhanced schema documentation. This latest version provides complete coverage of all Vapi platform capabilities, including:
+
+- **Enhanced Assistant Management**: Updated endpoints for creating, configuring, and managing AI voice assistants
+- **Expanded Call Operations**: Comprehensive call management with new status tracking and analysis features
+- **Tool Integration**: Complete API coverage for custom tools, function calling, and external integrations
+- **Phone Number Management**: Updated endpoints for managing phone numbers across different providers
+- **Webhook Configuration**: Enhanced webhook and server event handling specifications
+- **Advanced Analytics**: New endpoints for call analysis, transcription, and performance metrics
+
+## Using the OpenAPI Specification
+
+### Interactive API Explorer
+
+You can explore and test our APIs directly using our interactive documentation:
+
+- **Swagger UI**: [https://api.vapi.ai/api](https://api.vapi.ai/api)
+- **Raw OpenAPI JSON**: [https://api.vapi.ai/api-json](https://api.vapi.ai/api-json)
+
+### SDK Generation
+
+The OpenAPI specification can be used to generate SDKs in multiple programming languages:
+
+```bash
+# Generate TypeScript SDK
+openapi-generator generate \
+  -i https://api.vapi.ai/api-json \
+  -g typescript-axios \
+  -o ./vapi-typescript-sdk
+
+# Generate Python SDK
+openapi-generator generate \
+  -i https://api.vapi.ai/api-json \
+  -g python \
+  -o ./vapi-python-sdk
+
+# Generate Java SDK
+openapi-generator generate \
+  -i https://api.vapi.ai/api-json \
+  -g java \
+  -o ./vapi-java-sdk
+```
+
+### API Client Libraries
+
+Use the OpenAPI specification with popular HTTP client libraries:
+
+<Tabs>
+  <Tab title="JavaScript/TypeScript">
+    ```typescript
+    import axios from 'axios';
+    
+    const apiClient = axios.create({
+      baseURL: 'https://api.vapi.ai',
+      headers: {
+        'Authorization': 'Bearer YOUR_API_KEY',
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    // Create an assistant
+    const assistant = await apiClient.post('/assistant', {
+      name: 'Customer Support Bot',
+      firstMessage: 'Hello! How can I help you today?',
+      model: {
+        provider: 'openai',
+        model: 'gpt-4'
+      }
+    });
+    ```
+  </Tab>
+  
+  <Tab title="Python">
+    ```python
+    import requests
+    import json
+    
+    class VapiClient:
+        def __init__(self, api_key: str):
+            self.base_url = 'https://api.vapi.ai'
+            self.headers = {
+                'Authorization': f'Bearer {api_key}',
+                'Content-Type': 'application/json'
+            }
+    
+        def create_assistant(self, data: dict):
+            response = requests.post(
+                f'{self.base_url}/assistant',
+                headers=self.headers,
+                json=data
+            )
+            return response.json()
+    
+    # Usage
+    client = VapiClient('YOUR_API_KEY')
+    assistant = client.create_assistant({
+        'name': 'Customer Support Bot',
+        'firstMessage': 'Hello! How can I help you today?',
+        'model': {
+            'provider': 'openai',
+            'model': 'gpt-4'
+        }
+    })
+    ```
+  </Tab>
+  
+  <Tab title="cURL">
+    ```bash
+    # Create an assistant
+    curl -X POST https://api.vapi.ai/assistant \
+      -H "Authorization: Bearer YOUR_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "name": "Customer Support Bot",
+        "firstMessage": "Hello! How can I help you today?",
+        "model": {
+          "provider": "openai",
+          "model": "gpt-4"
+        }
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+## API Reference Integration
+
+The OpenAPI specification serves as the foundation for our comprehensive API reference documentation. Each endpoint includes:
+
+- **Request/Response Schemas**: Detailed parameter and response object definitions
+- **Authentication Requirements**: API key and authorization specifications
+- **Error Handling**: Complete error response schemas and status codes
+- **Code Examples**: Auto-generated examples in multiple programming languages
+
+## Validation and Testing
+
+Use the OpenAPI specification for API validation and automated testing:
+
+### Schema Validation
+
+```javascript
+import Ajv from 'ajv';
+import fetch from 'node-fetch';
+
+// Load OpenAPI schema
+const schemaResponse = await fetch('https://api.vapi.ai/api-json');
+const openApiSchema = await schemaResponse.json();
+
+// Validate API responses
+const ajv = new Ajv();
+const validateAssistant = ajv.compile(
+  openApiSchema.components.schemas.Assistant
+);
+
+const isValid = validateAssistant(assistantData);
+if (!isValid) {
+  console.error('Validation errors:', validateAssistant.errors);
+}
+```
+
+### API Testing
+
+```typescript
+import { OpenAPIV3 } from 'openapi-types';
+
+// Load and parse OpenAPI specification
+const spec: OpenAPIV3.Document = await loadOpenAPISpec();
+
+// Generate test cases from schema
+function generateTestsFromSchema(spec: OpenAPIV3.Document) {
+  Object.entries(spec.paths).forEach(([path, pathItem]) => {
+    Object.entries(pathItem).forEach(([method, operation]) => {
+      if (operation.operationId) {
+        it(`should handle ${method.toUpperCase()} ${path}`, async () => {
+          // Generate test based on schema
+          const testData = generateTestData(operation);
+          const response = await apiCall(method, path, testData);
+          expect(response).toMatchSchema(operation.responses['200']);
+        });
+      }
+    });
+  });
+}
+```
+
+## Version Management
+
+The OpenAPI specification is versioned alongside our API releases:
+
+- **Current Version**: Available at `/api-json`
+- **Version-Specific**: Future versioned endpoints will be available at `/api-json/v{version}`
+- **Changelog**: API changes are documented in our [release notes](/changelog)
+
+## Integration Tools
+
+Popular tools that work with our OpenAPI specification:
+
+- **Postman**: Import the specification directly into Postman collections
+- **Insomnia**: Use as a data source for API requests
+- **OpenAPI Generator**: Generate client SDKs and server stubs
+- **Swagger Codegen**: Create custom API clients
+- **API Gateway**: Import for AWS API Gateway, Azure API Management, etc.
+
+## Community SDKs
+
+The community has built additional SDKs using our OpenAPI specification:
+
+<CardGroup cols={2}>
+  <Card title="Official SDKs" icon="code" href="/quickstart/web">
+    TypeScript, Python, Java, Ruby, C#, Go, and more
+  </Card>
+  <Card title="Community Contributions" icon="users" href="https://github.com/VapiAI">
+    Community-maintained SDKs and integrations
+  </Card>
+</CardGroup>
+
+For questions about the OpenAPI specification or API integration, join our [Discord community](https://discord.gg/pUFNcf2WmH) or refer to the complete [API Reference](/api-reference).
