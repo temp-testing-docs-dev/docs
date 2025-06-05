@@ -81,7 +81,8 @@ Dynamic call transfers let your assistant transfer calls to different destinatio
         "number": "+14155552671",
         "numberE164CheckEnabled": true,
         "callerId": "+14155551234",
-        "extension": "101"
+        "extension": "101",
+        "timeout": 30
       }
     }
     ```
@@ -95,7 +96,8 @@ Dynamic call transfers let your assistant transfer calls to different destinatio
         "sipUri": "sip:customer-support@domain.com",
         "sipHeaders": {
           "X-Custom-Header": "value"
-        }
+        },
+        "timeout": 45
       }
     }
     ```
@@ -110,6 +112,72 @@ Dynamic call transfers let your assistant transfer calls to different destinatio
   </Step>
 </Steps>
 
+## Timeout Configuration
+
+When configuring warm transfer operations, you can specify a timeout value to control how long the transfer will wait before timing out. This is particularly useful for ensuring transfers don't hang indefinitely if the destination doesn't answer.
+
+### Setting Transfer Timeout
+
+You can configure the timeout using the `timeout` property in your transfer destination:
+
+```json
+{
+  "destination": {
+    "type": "number",
+    "number": "+14155552671",
+    "timeout": 120
+  }
+}
+```
+
+### Timeout Parameters
+
+- **Valid Range**: 1-600 seconds
+- **Default Value**: 60 seconds
+- **Purpose**: Controls how long the system waits for the transfer destination to be established before timing out
+
+### Example Configurations
+
+#### Short timeout for quick screening
+```json
+{
+  "destination": {
+    "type": "number",
+    "number": "+14155552671",
+    "timeout": 15,
+    "message": "Quickly connecting you to our support team."
+  }
+}
+```
+
+#### Extended timeout for complex transfers
+```json
+{
+  "destination": {
+    "type": "sip",
+    "sipUri": "sip:support@company.com",
+    "timeout": 300,
+    "message": "Please hold while we establish your connection."
+  }
+}
+```
+
+#### Using maximum timeout
+```json
+{
+  "destination": {
+    "type": "number",
+    "number": "+14155552671",
+    "timeout": 600,
+    "message": "Connecting you to our specialized support team."
+  }
+}
+```
+
+<Note>
+If no timeout is specified, the system will use the default value of 60 seconds. The timeout applies specifically to warm transfer operations and helps prevent calls from hanging indefinitely when destinations are unreachable.
+</Note>
+
 ## Conclusion
 
-Dynamic call transfers empower your assistant to route calls efficiently based on real-time data. By implementing this flow, you can ensure seamless interactions and provide a better experience for your users.
+Dynamic call transfers empower your assistant to route calls efficiently based on real-time data. By implementing this flow with proper timeout configuration, you can ensure seamless interactions and provide a better experience for your users while maintaining control over transfer durations.
