@@ -1,0 +1,161 @@
+---
+title: API Changelog
+slug: api-reference/api-changelog
+---
+
+# API Changelog
+
+As the Vapi API continues to evolve, we regularly update our OpenAPI specification to include new features, improvements, and breaking changes. This changelog helps developers understand what has changed and provides guidance on migration requirements.
+
+<Check>
+  Our OpenAPI specification is always available at [https://api.vapi.ai/api-json](https://api.vapi.ai/api-json)
+</Check>
+
+## Recent Updates
+
+### January 15, 2025
+
+**Updated Log Endpoints:**
+- Both the `GET /logs` and `DELETE /logs` endpoints have been simplified by removing the `orgId` parameter
+- This change streamlines log management by automatically using the authenticated organization context
+
+**Updated Log Schema:**
+The following fields in the Log schema are no longer required:
+- `requestDurationSeconds`
+- `requestStartedAt`
+- `requestFinishedAt`
+- `requestBody`
+- `requestHttpMethod`
+- `requestUrl`
+- `requestPath`
+- `responseHttpCode`
+
+<Note>
+  These fields may still be present in responses but are now optional, providing more flexibility in log data structure.
+</Note>
+
+### October 30, 2024
+
+**Expanded Language Options in CartesiaVoice:**
+- Added support for additional languages in `CartesiaVoice.language` (optional field)
+- New supported languages include:
+  - `hi` (Hindi)
+  - `it` (Italian)
+  - `ko` (Korean)
+  - `nl` (Dutch)
+  - `pl` (Polish)
+  - `ru` (Russian)
+  - `sv` (Swedish)
+  - `tr` (Turkish)
+
+**Enhanced Template Variables in AssistantOverrides:**
+- The `AssistantOverrides.variableValues` now supports LiquidJS syntax for replacing template variables
+- You can customize assistant messages using dynamic expressions:
+  - Use `{{ name }}` for simple variable replacement
+  - Format dates with `{{"now" | date: "%b %d, %Y, %I:%M %p", "America/New_York"}}`
+- This enhancement provides more powerful templating capabilities for dynamic content generation
+
+## Migration Guidelines
+
+### For January 15, 2025 Updates
+
+**Log Endpoints Migration:**
+If you're currently using the `orgId` parameter in your log API calls, you can safely remove it:
+
+```javascript
+// Before (still works but deprecated)
+const logs = await fetch('/api/logs?orgId=your-org-id', {
+  headers: { 'Authorization': 'Bearer your-token' }
+});
+
+// After (recommended)
+const logs = await fetch('/api/logs', {
+  headers: { 'Authorization': 'Bearer your-token' }
+});
+```
+
+**Log Schema Changes:**
+Update your code to handle optional log fields gracefully:
+
+```javascript
+// Before - assuming all fields are present
+const duration = log.requestDurationSeconds;
+const startTime = log.requestStartedAt;
+
+// After - with proper null checking
+const duration = log.requestDurationSeconds || 0;
+const startTime = log.requestStartedAt || new Date().toISOString();
+```
+
+### For October 30, 2024 Updates
+
+**CartesiaVoice Language Support:**
+You can now specify additional languages when creating assistants:
+
+```json
+{
+  "voice": {
+    "provider": "cartesia",
+    "voiceId": "your-voice-id",
+    "language": "es" // Now supports more languages
+  }
+}
+```
+
+**Template Variables:**
+Upgrade your assistant configurations to use LiquidJS syntax:
+
+```json
+{
+  "assistantOverrides": {
+    "variableValues": {
+      "greeting": "Hello {{ name }}, today is {{ \"now\" | date: \"%B %d, %Y\" }}"
+    }
+  }
+}
+```
+
+## Breaking Changes
+
+### January 15, 2025
+- **Log Endpoints**: The `orgId` parameter has been removed from `GET /logs` and `DELETE /logs` endpoints
+- **Impact**: Low - The parameter is ignored if provided, but should be removed from client code
+
+### October 30, 2024
+- **No Breaking Changes**: All updates were additive and maintain backward compatibility
+
+## Staying Updated
+
+<Card
+  title="Subscribe to Updates"
+  icon="envelope"
+  href="/changelog"
+>
+  Get notified about API changes and new features by subscribing to our changelog
+</Card>
+
+## Need Help?
+
+If you encounter issues during migration or have questions about API changes:
+
+<CardGroup cols={2}>
+  <Card
+    title="Join Our Discord"
+    icon="fa-brands fa-discord"
+    color="#5A65EA"
+    href="https://discord.gg/pUFNcf2WmH"
+  >
+    Get help from our community and team
+  </Card>
+  <Card
+    title="API Reference"
+    icon="book"
+    href="/api-reference"
+  >
+    View the complete API documentation
+  </Card>
+</CardGroup>
+
+## Version History
+
+For a complete history of changes, refer to our detailed [changelog](/changelog) which includes feature updates, bug fixes, and platform improvements beyond just API changes.
