@@ -3,8 +3,108 @@ title: OpenAPI
 slug: api-reference/openapi
 ---
 
-
 <Check>
   Our OpenAPI is hosted at
   [https://api.vapi.ai/api-json](https://api.vapi.ai/api-json)
 </Check>
+
+## What's New
+
+The Vapi OpenAPI specification has been significantly updated with comprehensive changes across endpoints, parameters, and data structures. These updates enhance the API's functionality and provide better integration capabilities for developers.
+
+## Key Areas of Updates
+
+The recent OpenAPI specification updates include improvements to:
+
+- **Assistant Configuration**: Enhanced options for configuring AI assistants with new parameters and settings
+- **Call Management**: Updated call endpoints with additional features and improved error handling
+- **Tool Integration**: Expanded tool configurations and new integration options
+- **Voice and Audio**: Enhanced voice provider options and audio processing capabilities
+- **Webhooks and Events**: Improved event handling and webhook configurations
+- **Provider Integrations**: New and updated integrations with various service providers
+
+## Using the OpenAPI Specification
+
+### Integration with Development Tools
+
+The OpenAPI specification can be used with various development tools:
+
+- **API Documentation**: Generate interactive documentation using tools like Swagger UI
+- **SDK Generation**: Create client SDKs in multiple programming languages
+- **API Testing**: Use tools like Postman or Insomnia for API testing
+- **Code Completion**: Enable better IDE support with auto-completion
+
+### Importing the Specification
+
+You can import the OpenAPI specification directly into your preferred API development tool:
+
+```bash
+# Using curl to fetch the specification
+curl https://api.vapi.ai/api-json > vapi-openapi.json
+```
+
+```javascript
+// Using in JavaScript/TypeScript projects
+const response = await fetch('https://api.vapi.ai/api-json');
+const openApiSpec = await response.json();
+```
+
+## Validation and Testing
+
+The updated OpenAPI specification ensures:
+
+- **Schema Validation**: All request and response schemas are properly defined
+- **Parameter Documentation**: Comprehensive documentation for all endpoint parameters
+- **Error Responses**: Detailed error response structures for better error handling
+- **Authentication**: Clear authentication requirements and security schemas
+
+## Migration Considerations
+
+If you're using tools or SDKs based on the previous OpenAPI specification:
+
+1. **Review Changes**: Check for any breaking changes in endpoints you're currently using
+2. **Update Dependencies**: Regenerate any auto-generated code or SDKs
+3. **Test Integration**: Thoroughly test your integration with the updated specification
+4. **Documentation Updates**: Update any internal documentation based on the new specification
+
+## Getting Support
+
+If you encounter any issues with the updated OpenAPI specification or need clarification on specific changes:
+
+<CardGroup cols={2}>
+  <Card
+    title="Join Our Discord"
+    icon="fa-brands fa-discord"
+    iconType="solid"
+    color="#5A65EA"
+    href="https://discord.gg/pUFNcf2WmH"
+  >
+    Connect with our team & other developers using Vapi.
+  </Card>
+  <Card
+    title="Email Support"
+    icon="mailbox"
+    iconType="solid"
+    color="#7a7f85"
+    href="mailto:support@vapi.ai"
+  >
+    Send our support team an email.
+  </Card>
+</CardGroup>
+
+## Related Resources
+
+<CardGroup cols={2}>
+  <Card title="API Reference" icon="book" href="/api-reference">
+    Explore the complete API reference documentation
+  </Card>
+  <Card title="Swagger UI" icon="external-link" href="https://api.vapi.ai/api">
+    View the interactive API documentation
+  </Card>
+  <Card title="SDKs" icon="code" href="/sdks">
+    Download SDKs for various programming languages
+  </Card>
+  <Card title="Quickstart Guide" icon="rocket" href="/quickstart">
+    Get started with Vapi in minutes
+  </Card>
+</CardGroup>
