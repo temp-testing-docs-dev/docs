@@ -13,6 +13,62 @@ Call analysis automatically summarizes and evaluates every call for insights and
 
 Results are attached to the call record and can be viewed in the call instance dashboard or retrieved via the API. You can customize the analysis using prompts and schemas in your assistant's `analysisPlan`.
 
+## Message threshold configuration
+
+You can control when call analysis runs based on the number of messages exchanged during the call using the `minMessagesThreshold` setting. This helps avoid running analysis on very short calls that may not contain meaningful content.
+
+### Configuration
+
+Configure the minimum message threshold in your assistant's `analysisPlan`:
+
+```json
+{
+  "analysisPlan": {
+    "minMessagesThreshold": 5
+  }
+}
+```
+
+### Behavior
+
+- **Default**: If not specified, analysis runs on all calls regardless of message count
+- **When set**: Analysis only runs if the call contains at least the specified number of messages
+- **Message counting**: Includes all messages in the conversation (user, assistant, system, tool calls, etc.)
+
+### Use cases
+
+- **Skip short calls**: Avoid analyzing calls that end immediately due to wrong numbers, hang-ups, or technical issues
+- **Focus on meaningful interactions**: Only analyze calls where substantial conversation occurred
+- **Cost optimization**: Reduce analysis costs by filtering out very brief interactions
+
+### Example configurations
+
+```json
+// Only analyze calls with at least 3 messages
+{
+  "analysisPlan": {
+    "minMessagesThreshold": 3,
+    "summaryPrompt": "Summarize this customer interaction"
+  }
+}
+```
+
+```json
+// Only analyze substantial conversations (10+ messages)
+{
+  "analysisPlan": {
+    "minMessagesThreshold": 10,
+    "structuredDataSchema": {
+      "type": "object",
+      "properties": {
+        "outcome": { "type": "string" },
+        "nextSteps": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}
+```
+
 ## Customization
 
 You can customize the following properties in your assistant's `analysisPlan`:
