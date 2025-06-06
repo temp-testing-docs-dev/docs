@@ -4,7 +4,6 @@ subtitle: What is AssemblyAI?
 slug: providers/transcriber/assembly-ai
 ---
 
-
 **What is AssemblyAI?**
 
 AssemblyAI is a leading provider of AI-driven speech recognition and understanding technologies. Their advanced models enable accurate transcription and analysis of audio data, facilitating applications across various industries.
@@ -29,6 +28,73 @@ AssemblyAI offers a comprehensive suite of AI-driven tools designed to meet dive
 
 - AssemblyAI's real-time transcription feature enables sub-second latency conversion of speech to text, beneficial for live captioning, customer support, and interactive voice response systems, enhancing user experience and operational efficiency.
 
+## Universal Streaming API Configuration
+
+AssemblyAI now offers enhanced streaming capabilities through their Universal Streaming API. When using AssemblyAI as your transcriber with Vapi, you can enable this advanced streaming functionality to get even better performance and accuracy.
+
+### Enabling Universal Streaming API
+
+To enable the Universal Streaming API for your AssemblyAI transcriber, set the `enableUniversalStreamingApi` property to `true` in your assistant configuration:
+
+```json
+{
+  "transcriber": {
+    "provider": "assembly-ai",
+    "enableUniversalStreamingApi": true,
+    "model": "best",
+    "language": "en"
+  }
+}
+```
+
+### Benefits of Universal Streaming API
+
+When `enableUniversalStreamingApi` is enabled, you gain access to:
+
+**Enhanced Accuracy**
+- Improved transcription quality through AssemblyAI's latest Universal-2 model
+- Better handling of diverse accents and speaking patterns
+- Reduced word error rates across multiple languages
+
+**Lower Latency**
+- Optimized streaming pipeline for faster response times
+- Reduced time-to-first-word in transcription results
+- Better real-time conversation flow
+
+**Advanced Features**
+- Access to the latest AssemblyAI streaming features
+- Improved punctuation and capitalization
+- Better handling of background noise and audio quality variations
+
+### Configuration Options
+
+The Universal Streaming API works with all standard AssemblyAI transcriber options:
+
+```json
+{
+  "transcriber": {
+    "provider": "assembly-ai",
+    "enableUniversalStreamingApi": true,
+    "model": "best",
+    "language": "en",
+    "languageDetectionEnabled": true,
+    "keywords": ["product", "service", "support"]
+  }
+}
+```
+
+### When to Use Universal Streaming API
+
+Enable the Universal Streaming API when you need:
+- **Maximum accuracy** for critical business conversations
+- **Lowest possible latency** for real-time interactions  
+- **Multi-language support** with automatic language detection
+- **Production-grade reliability** for high-volume applications
+
+<Note>
+The Universal Streaming API requires AssemblyAI API credentials to be configured in your Vapi dashboard under the "Transcriber Providers" section.
+</Note>
+
 **Use Cases for AssemblyAI**
 
 AssemblyAI's versatile technology serves multiple industries, enhancing operations and delivering valuable insights:
@@ -39,7 +105,7 @@ AssemblyAI's versatile technology serves multiple industries, enhancing operatio
 
 **Media And Content Creation**
 
-- In the media sector, AssemblyAI’s speech-to-text solutions are used to transcribe interviews, podcasts, and video content. This makes content searchable, accessible, and easier to manage, enhancing the efficiency of media production workflows.
+- In the media sector, AssemblyAI's speech-to-text solutions are used to transcribe interviews, podcasts, and video content. This makes content searchable, accessible, and easier to manage, enhancing the efficiency of media production workflows.
 
 **Innovation and Research:**
 
