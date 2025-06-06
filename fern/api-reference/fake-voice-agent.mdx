@@ -1,0 +1,148 @@
+---
+title: Fake Voice Agent API Reference
+slug: api-reference/fake-voice-agent
+---
+
+# Fake Voice Agent API Reference
+
+## Introduction
+
+This documentation page provides detailed information about the Fake Voice Agent endpoints. These endpoints are used for testing and development purposes and allow you to simulate voice agent operations such as starting, stopping, and checking the status of a fake voice agent.
+
+## Endpoints
+
+### Start a Fake Voice Agent
+
+**Path:** `/fake-voice-agent/start`  
+**Method:** `POST`  
+**Security:** Bearer token
+
+**Request Body:**
+
+```json
+{
+  "agentName": "string"
+}
+```
+
+**Response:**
+
+```json
+{
+  "id": "string",
+  "status": "string"
+}
+```
+
+**Example:**
+
+```javascript
+const vapi = new Vapi('YOUR_PUBLIC_API_KEY');
+const response = await vapi.fakeVoiceAgent.start({ agentName: 'TestAgent' });
+console.log(response);
+```
+
+### Stop a Fake Voice Agent
+
+**Path:** `/fake-voice-agent/stop`  
+**Method:** `POST`  
+**Security:** Bearer token
+
+**Request Body:**
+
+```json
+{
+  "id": "string"
+}
+```
+
+**Response:**
+
+```json
+{
+  "status": "string"
+}
+```
+
+**Example:**
+
+```javascript
+const vapi = new Vapi('YOUR_PUBLIC_API_KEY');
+const response = await vapi.fakeVoiceAgent.stop({ id: 'agent_id' });
+console.log(response);
+```
+
+### Get Fake Voice Agent Status
+
+**Path:** `/fake-voice-agent/{id}/status`  
+**Method:** `GET`  
+**Security:** Bearer token
+
+**Path Parameters:**
+
+- `id` (required): The ID of the fake voice agent.
+
+**Response:**
+
+```json
+{
+  "id": "string",
+  "status": "string"
+}
+```
+
+**Example:**
+
+```javascript
+const vapi = new Vapi('YOUR_PUBLIC_API_KEY');
+const response = await vapi.fakeVoiceAgent.status('agent_id');
+console.log(response);
+```
+
+## Usage Examples
+
+### Starting a Fake Voice Agent
+
+To start a fake voice agent, you need to send a POST request to the `/fake-voice-agent/start` endpoint with the agent name in the request body.
+
+```javascript
+const vapi = new Vapi('YOUR_PUBLIC_API_KEY');
+const startResponse = await vapi.fakeVoiceAgent.start({ agentName: 'TestAgent' });
+console.log(`Fake voice agent started with ID: ${startResponse.id}`);
+```
+
+### Stopping a Fake Voice Agent
+
+To stop a fake voice agent, send a POST request to the `/fake-voice-agent/stop` endpoint with the agent ID in the request body.
+
+```javascript
+const vapi = new Vapi('YOUR_PUBLIC_API_KEY');
+const stopResponse = await vapi.fakeVoiceAgent.stop({ id: 'agent_id' });
+console.log(`Fake voice agent stopped. Status: ${stopResponse.status}`);
+```
+
+### Checking Fake Voice Agent Status
+
+To check the status of a fake voice agent, send a GET request to the `/fake-voice-agent/{id}/status` endpoint, replacing `{id}` with the actual agent ID.
+
+```javascript
+const vapi = new Vapi('YOUR_PUBLIC_API_KEY');
+const statusResponse = await vapi.fakeVoiceAgent.status('agent_id');
+console.log(`Fake voice agent status: ${statusResponse.status}`);
+```
+
+## Error Handling
+
+When using these endpoints, you may encounter various error responses. Here are some common ones:
+
+- **401 Unauthorized:** The provided API key is invalid or missing.
+- **404 Not Found:** The specified agent ID does not exist.
+- **500 Internal Server Error:** An unexpected error occurred on the server.
+
+Ensure that you handle these errors appropriately in your application to provide a smooth user experience.
+
+## Conclusion
+
+The Fake Voice Agent endpoints are useful for testing and development scenarios where you need to simulate voice agent operations without actual interactions. Use these endpoints to verify your application's behavior and handle different states of the voice agent.
+
+For more information on Vapi's voice AI pipeline and other API endpoints, refer to the [Core Models documentation](/quickstart) and the [OpenAPI documentation](/api-reference/openapi).
