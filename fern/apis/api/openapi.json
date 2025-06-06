@@ -2,7 +2,7 @@
     "/fake-route": {
       "get": {
         "operationId": "FakeController_getFakeRoute",
-        "summary": "Fake GET endpoint",
+        "summary": "Fake voice root endpoint",
         "parameters": [],
         "responses": {
           "200": {
@@ -76,6 +76,147 @@
         ]
       }
     },
+    "/fake-voice-agent/start": {
+      "post": {
+        "operationId": "FakeVoiceAgent_start",
+        "summary": "Start a fake voice agent",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "agentName": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "FakeVoiceAgent"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/fake-voice-agent/stop": {
+      "post": {
+        "operationId": "FakeVoiceAgent_stop",
+        "summary": "Stop a fake voice agent",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "FakeVoiceAgent"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/fake-voice-agent/{id}/status": {
+      "get": {
+        "operationId": "FakeVoiceAgent_status",
+        "summary": "Get fake voice agent status",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "running": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "FakeVoiceAgent"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/fake-route/{id}": {
       "get": {
         "operationId": "FakeController_getFakeRouteById",
@@ -123,7 +264,7 @@
     "/fake-list": {
       "get": {
         "operationId": "FakeController_listFakeData",
-        "summary": "List fake data",
+        "summary": "List fake voice agents",
         "parameters": [],
         "responses": {
           "200": {
@@ -153,7 +294,7 @@
     "/fake-status": {
       "get": {
         "operationId": "FakeController_status",
-        "summary": "Fake status endpoint",
+        "summary": "Fake health check",
         "parameters": [],
         "responses": {
           "200": {
