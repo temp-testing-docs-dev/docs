@@ -1,0 +1,253 @@
+---
+title: Fake Voice Agent API Endpoints
+description: Detailed documentation for the Fake Voice Agent API endpoints.
+---
+
+# Fake Voice Agent API Endpoints
+
+## Introduction
+
+The Fake Voice Agent API provides endpoints for simulating voice agent interactions. This documentation outlines the available endpoints, their usage, and example requests.
+
+## Endpoints
+
+### GET /fake-route
+
+**Summary:** Fake voice root endpoint
+
+**Description:** This endpoint simulates a basic voice interaction.
+
+**Response:**
+- **200:** Returns a simple JSON object with a message.
+
+**Example:**
+
+```javascript
+fetch('/fake-route', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY'
+  }
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error('Error:', error));
+```
+
+### POST /fake-route
+
+**Summary:** Fake POST endpoint
+
+**Description:** This endpoint simulates a voice interaction with a provided data string.
+
+**Request Body:**
+- **data** (string): The data string to be processed.
+
+**Response:**
+- **201:** Returns a JSON object with a status.
+
+**Example:**
+
+```javascript
+fetch('/fake-route', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer YOUR_API_KEY'
+  },
+  body: JSON.stringify({ data: 'example data' })
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error('Error:', error));
+```
+
+### POST /fake-voice-agent/start
+
+**Summary:** Start a fake voice agent
+
+**Description:** This endpoint initiates a fake voice agent interaction.
+
+**Request Body:**
+- **agentName** (string): The name of the agent to start.
+
+**Response:**
+- **200:** Returns a JSON object with the agent's ID and status.
+
+**Example:**
+
+```javascript
+fetch('/fake-voice-agent/start', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer YOUR_API_KEY'
+  },
+  body: JSON.stringify({ agentName: 'testAgent' })
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error('Error:', error));
+```
+
+### POST /fake-voice-agent/stop
+
+**Summary:** Stop a fake voice agent
+
+**Description:** This endpoint stops a fake voice agent interaction.
+
+**Request Body:**
+- **id** (string): The ID of the agent to stop.
+
+**Response:**
+- **200:** Returns a JSON object with the status.
+
+**Example:**
+
+```javascript
+fetch('/fake-voice-agent/stop', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer YOUR_API_KEY'
+  },
+  body: JSON.stringify({ id: 'agent123' })
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error('Error:', error));
+```
+
+### GET /fake-voice-agent/{id}/status
+
+**Summary:** Get fake voice agent status
+
+**Description:** This endpoint retrieves the status of a fake voice agent.
+
+**Parameters:**
+- **id** (string, required): The ID of the agent.
+
+**Response:**
+- **200:** Returns a JSON object with the agent's ID and status.
+
+**Example:**
+
+```javascript
+fetch('/fake-voice-agent/agent123/status', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY'
+  }
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error('Error:', error));
+```
+
+### GET /fake-list
+
+**Summary:** List fake voice agents
+
+**Description:** This endpoint lists all fake voice agents.
+
+**Response:**
+- **200:** Returns an array of agent names.
+
+**Example:**
+
+```javascript
+fetch('/fake-list', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY'
+  }
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error('Error:', error));
+```
+
+### GET /fake-status
+
+**Summary:** Fake health check
+
+**Description:** This endpoint performs a health check on the fake voice agent service.
+
+**Response:**
+- **200:** Returns a JSON object with the status.
+
+**Example:**
+
+```javascript
+fetch('/fake-status', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY'
+  }
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error('Error:', error));
+```
+
+## Usage Examples
+
+### Starting a Fake Voice Agent
+
+```javascript
+fetch('/fake-voice-agent/start', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer YOUR_API_KEY'
+  },
+  body: JSON.stringify({ agentName: 'exampleAgent' })
+})
+.then(response => response.json())
+.then(data => {
+  console.log('Agent started:', data);
+  // Store the agent ID for future requests
+  const agentId = data.id;
+})
+.catch(error => console.error('Error:', error));
+```
+
+### Stopping a Fake Voice Agent
+
+```javascript
+fetch('/fake-voice-agent/stop', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer YOUR_API_KEY'
+  },
+  body: JSON.stringify({ id: 'exampleAgentId' })
+})
+.then(response => response.json())
+.then(data => console.log('Agent stopped:', data))
+.catch(error => console.error('Error:', error));
+```
+
+### Checking Fake Voice Agent Status
+
+```javascript
+fetch('/fake-voice-agent/exampleAgentId/status', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY'
+  }
+})
+.then(response => response.json())
+.then(data => console.log('Agent status:', data))
+.catch(error => console.error('Error:', error));
+```
+
+## Security
+
+All endpoints require authentication via a bearer token. Ensure your API key is included in the `Authorization` header for all requests.
+
+## Conclusion
+
+The Fake Voice Agent API provides a set of endpoints to simulate voice agent interactions. Use these endpoints for testing and development purposes.
+
+For more information on integrating voice agents into your applications, refer to the [Vapi Web SDK documentation](/quickstart/web) and [Vapi Server SDK documentation](/quickstart/server).
