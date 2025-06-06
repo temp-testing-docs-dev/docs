@@ -3,8 +3,112 @@ title: OpenAPI
 slug: api-reference/openapi
 ---
 
+# OpenAPI Specification
+
+## Introduction
+
+This page provides information about Vapi's OpenAPI specification, which describes the structure and capabilities of our API. The OpenAPI specification is a standard, language-agnostic interface description for REST APIs, allowing both humans and computers to discover and understand the capabilities of a service without requiring access to source code, additional documentation, or inspection of network traffic.
+
+## Accessing the OpenAPI Specification
 
 <Check>
-  Our OpenAPI is hosted at
+  Our OpenAPI specification is hosted at
   [https://api.vapi.ai/api-json](https://api.vapi.ai/api-json)
 </Check>
+
+You can use this URL to access the most up-to-date version of our API specification. This specification can be used with various tools and libraries that support OpenAPI, enabling you to generate client libraries, create API documentation, or interact with our API more easily.
+
+## Using the OpenAPI Specification
+
+The OpenAPI specification provides detailed information about:
+
+1. Available endpoints
+2. Operations on each endpoint
+3. Input and output parameters for each operation
+4. Authentication methods
+5. Contact information, license, terms of service, and other information
+
+You can use this specification to:
+
+- Generate client libraries in various programming languages
+- Create interactive API documentation
+- Set up automated testing for API endpoints
+- Understand the structure and capabilities of the Vapi API
+
+## Example Endpoints
+
+While the full specification is available at the provided URL, here are some example endpoints from our API:
+
+```json
+{
+  "/fake-route": {
+    "get": {
+      "operationId": "FakeController_getFakeRoute",
+      "summary": "Fake GET endpoint",
+      "responses": {
+        "200": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "tags": ["Fake"],
+      "security": [{"bearer": []}]
+    },
+    "post": {
+      "operationId": "FakeController_createFakeRoute",
+      "summary": "Fake POST endpoint",
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "tags": ["Fake"],
+      "security": [{"bearer": []}]
+    }
+  }
+}
+```
+
+This example shows the structure for a `/fake-route` endpoint with both GET and POST operations, including their respective request and response schemas.
+
+## Conclusion
+
+The OpenAPI specification is a powerful tool for understanding and interacting with the Vapi API. By leveraging this specification, developers can more easily integrate Vapi's services into their applications and workflows. Remember to always refer to the most recent version of the specification at [https://api.vapi.ai/api-json](https://api.vapi.ai/api-json) for the most up-to-date information about our API.
