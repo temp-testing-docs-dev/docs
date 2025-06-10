@@ -36,10 +36,11 @@ You can find these under the **"Ended Reason"** section of your [call logs](http
 These relate to issues within the AI processing pipeline or the Large Language Models (LLMs) used for understanding and generating text:
 
 - `call.in-progress.error-vapifault-*`: Various error codes indicate specific failures within the processing pipeline, such as function execution, LLM responses, or external service integration. Examples include OpenAI, Azure OpenAI, Together AI, and several other LLMs or voice providers.
-- `call.in-progress.error-providerfault-*`: Similar to `call.in-progress.error-vapifault-*`. However, these error codes are surfaced when Vapi receives an error that has occured on the provider's side. Examples include internal server errors, or service unavailability.
+- `call.in-progress.error-providerfault-*`: Similar to `call.in-progress.error-vapifault-*`. However, these error codes are surfaced when Vapi receives an error that has occurred on the provider's side. Examples include internal server errors, or service unavailability.
 - `pipeline-error-*`: Similar to `call.in-progress.error-vapifault-*`. However, these error codes are surfaced when you are using your own provider keys.
 - `pipeline-no-available-llm-model`: No suitable LLM was available to process the request. Previously `pipeline-no-available-model`.
 - `call.in-progress.error-pipeline-no-available-llm-model`: No suitable LLM was available to process the request during the call.
+- `pipeline-error-eleven-labs-vapi-voice-disabled-by-owner`: The Eleven Labs voice used by Vapi has been disabled by the owner.
 
 #### Phone Calls and Connectivity
 
