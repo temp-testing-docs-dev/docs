@@ -27,6 +27,7 @@ colors:
     light: "#FFFFFF"
     dark: "#0E0E13"
 experimental:
+  openapi-parser-v3: true
   mdx-components:
     - snippets
 css: assets/styles.css
@@ -104,12 +105,18 @@ navigation:
           - page: Web calls
             icon: fa-light fa-browser
             path: quickstart/web.mdx
-          - page: Example Library
+          - page: Vapi Guides
             icon: fa-light fa-book-open
-            path: examples.mdx
+            path: guides.mdx
 
       - section: Assistants
         contents:
+          - section: Core concepts
+            icon: fa-light fa-brain
+            contents:
+              - page: Transient vs permanent configurations
+                path: assistants/concepts/transient-vs-permanent-configurations.mdx
+                icon: fa-light fa-toggle-on
           - section: Conversation behavior
             icon: fa-light fa-comments
             contents:
@@ -121,8 +128,13 @@ navigation:
                 path: assistants/personalization.mdx
               - page: Voice formatting plan
                 path: assistants/voice-formatting-plan.mdx
+              - page: Flush syntax
+                path: assistants/flush-syntax.mdx
+                icon: fa-light fa-forward
               - page: Background messages
                 path: assistants/background-messages.mdx
+              - page: Idle messages
+                path: assistants/idle-messages.mdx
               - page: Assistant hooks
                 path: assistants/assistant-hooks.mdx
           - section: Model configurations
@@ -149,6 +161,9 @@ navigation:
               - page: Custom tools
                 path: tools/custom-tools.mdx
                 icon: fa-light fa-screwdriver-wrench
+              - page: Custom tools troubleshooting
+                path: tools/custom-tools-troubleshooting.mdx
+                icon: fa-light fa-wrench
               - section: External tools
                 icon: fa-light fa-cubes
                 contents:
@@ -187,6 +202,9 @@ navigation:
                 path: customization/custom-voices/playht.mdx
               - page: Tavus
                 path: customization/custom-voices/tavus.mdx
+          - page: Custom TTS integration
+            path: customization/custom-tts.mdx
+            icon: fa-light fa-volume-high
           - section: Custom LLMs
             icon: fa-light fa-brain-circuit
             contents:
@@ -303,6 +321,9 @@ navigation:
             contents:
               - page: Real-time call control
                 path: calls/call-features.mdx
+              - page: Customer join timeout
+                path: calls/customer-join-timeout.mdx
+                icon: fa-light fa-clock
               - page: Voicemail detection
                 path: calls/voicemail-detection.mdx
           - section: Transfer calls
@@ -314,6 +335,9 @@ navigation:
                 path: calls/call-dynamic-transfers.mdx
               - page: On-hold specialist transfer
                 path: calls/call-handling-with-vapi-and-twilio.mdx
+              - page: Debug forwarding drops
+                path: calls/troubleshoot-call-forwarding-drops.mdx
+                icon: fa-light fa-bug
           - page: Call end reasons
             path: calls/call-ended-reason.mdx
             icon: fa-light fa-phone-hangup
@@ -749,15 +773,15 @@ redirects:
   - source: "/multilingual/introduction"
     destination: "/multilingual"
   - source: "/outbound_sales"
-    destination: "/examples/lead-qualification"
+    destination: "/workflows/examples/lead-qualification"
   - source: "/technical_support"
-    destination: "/examples/inbound-support"
+    destination: "/assistants/examples/inbound-support"
   - source: "/pizza_website"
-    destination: "/examples/inbound-support"
+    destination: "/assistants/examples/inbound-support"
   - source: "/examples/pizza-website"
-    destination: "/examples/inbound-support"
+    destination: "/assistants/examples/inbound-support"
   - source: "/voice_widget"
-    destination: "/examples/voice-widget"
+    destination: "/assistants/examples/voice-widget"
   - source: "/clients"
     destination: "/sdks"
   - source: "/error_message_guide"
@@ -808,7 +832,7 @@ redirects:
     destination: /quickstart
   - source: /assistants
     destination: /api-reference/assistants/create
-  - source: /workflows/examples/outbound-sales
+  - source: /examples/outbound-sales
     destination: /workflows/examples/lead-qualification
   - source: /workflows
     destination: /workflows/quickstart
@@ -822,3 +846,9 @@ redirects:
     destination: /assistants/examples/docs-agent
   - source: /sdk/web
     destination: /quickstart/web
+  - source: /workflows/examples
+    destination: /workflows/examples/appointment-scheduling
+  - source: /assistants/examples
+    destination: /assistants/examples/inbound-support
+  - source: /examples
+    destination: /guides
