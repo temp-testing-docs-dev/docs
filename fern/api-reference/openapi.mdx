@@ -1,10 +1,61 @@
 ---
 title: OpenAPI
+description: Information about Vapi's OpenAPI specification and how to access it
 slug: api-reference/openapi
 ---
 
+# OpenAPI Specification
+
+Vapi provides an OpenAPI specification that describes our API endpoints, request/response structures, and authentication requirements. This specification can be used to generate client libraries, explore the API, and integrate Vapi into your applications.
+
+## Accessing the OpenAPI Specification
 
 <Check>
-  Our OpenAPI is hosted at
+  Our OpenAPI specification is hosted at:
   [https://api.vapi.ai/api-json](https://api.vapi.ai/api-json)
 </Check>
+
+You can use this URL to:
+
+1. Import the specification into API development tools like Postman or Insomnia
+2. Generate client libraries for various programming languages
+3. Explore the available endpoints and their parameters
+
+## Using the OpenAPI Specification
+
+### Importing into API Tools
+
+Most modern API development tools support importing OpenAPI specifications. To use Vapi's specification:
+
+1. Open your preferred API tool (e.g., Postman, Insomnia)
+2. Look for an option to import an API or OpenAPI specification
+3. Enter the URL: `https://api.vapi.ai/api-json`
+4. Follow the tool's instructions to complete the import
+
+### Generating Client Libraries
+
+Many tools and libraries can generate client code based on OpenAPI specifications. For example:
+
+- [OpenAPI Generator](https://openapi-generator.tech/): Supports multiple programming languages
+- [Swagger Codegen](https://swagger.io/tools/swagger-codegen/): Another popular option for code generation
+
+To generate a client library:
+
+1. Install your chosen generator tool
+2. Run the generator, pointing it to `https://api.vapi.ai/api-json`
+3. Select your target programming language
+4. Follow the tool's instructions to complete the code generation
+
+### Exploring the API
+
+You can also use online tools to explore the Vapi API without leaving your browser:
+
+1. Visit [Swagger UI](https://petstore.swagger.io/)
+2. Enter `https://api.vapi.ai/api-json` in the explore box
+3. Browse the available endpoints, request/response structures, and try out API calls
+
+## Keeping Up-to-Date
+
+The OpenAPI specification is automatically updated when changes are made to the Vapi API. Always refer to the hosted specification URL to ensure you're working with the most current version.
+
+For any questions or issues related to the OpenAPI specification, please [contact our support team](/support).
